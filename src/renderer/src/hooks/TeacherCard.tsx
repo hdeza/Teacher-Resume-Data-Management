@@ -1,11 +1,11 @@
 import React from 'react'
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined'
 import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined'
-import ProfileButton from '../hooks/ProfileButton'
+import ProfileButton from './ProfileButton'
 export default function TeacherCard() {
   return (
     <>
-      <div className="border-2 p-7 max-w-xs mx-10">
+      <div className="border-2 p-7 max-w-xs">
         <section className="flex">
           <div className="flex flex-col justify-center">
             <PersonOutlineOutlinedIcon sx={{ fontSize: 35 }} />
@@ -35,11 +35,18 @@ export default function TeacherCard() {
             <p className="text-lg font-semibold">32</p>
           </article>
         </section>
-        <section className="flex justify-between">
-          <button className="flex border-2 p-2 rounded-md ">
-            <FileDownloadOutlinedIcon />
-            <p className="pl-1 font-medium">Descargar Cv</p>
-          </button>
+        <section className="flex gap-x-1">
+          <a
+            href="https://drive.google.com/file/d/1QTDdztChYGl9Wy6Nx9y-SrpNR5a68UB2/view?usp=sharing"
+            download
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <button className="flex border-2 p-2 rounded-md ">
+              <FileDownloadOutlinedIcon />
+              <p className="pl-1 font-medium">Descargar Cv</p>
+            </button>
+          </a>
           <ProfileButton />
         </section>
       </div>

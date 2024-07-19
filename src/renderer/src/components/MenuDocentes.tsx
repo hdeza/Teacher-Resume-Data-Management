@@ -6,7 +6,7 @@ import FiltrarButton from '../hooks/FiltrarButton'
 export default function MenuDocentes() {
   return (
     <>
-      <section className="flex justify-between my-8 mx-10 p-2 border-b">
+      <section className="flex justify-between mt-24 mb-8 mx-10 p-2 border-b">
         <h1 className="text-3xl font-bold">Docentes</h1>
         <div className="flex">
           <label htmlFor="">
