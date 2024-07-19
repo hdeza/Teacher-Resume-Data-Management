@@ -1,7 +1,8 @@
 import React from 'react'
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined'
-import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined'
+
 import ProfileButton from './ProfileButton'
+import DownloadCv from '../components/DownloadCv'
 export default function TeacherCard() {
   return (
     <>
@@ -36,17 +37,7 @@ export default function TeacherCard() {
           </article>
         </section>
         <section className="flex gap-x-1">
-          <a
-            href="https://drive.google.com/file/d/1QTDdztChYGl9Wy6Nx9y-SrpNR5a68UB2/view?usp=sharing"
-            download
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <button className="flex border-2 p-2 rounded-md ">
-              <FileDownloadOutlinedIcon />
-              <p className="pl-1 font-medium">Descargar Cv</p>
-            </button>
-          </a>
+          <DownloadCv />
           <ProfileButton />
         </section>
       </div>
