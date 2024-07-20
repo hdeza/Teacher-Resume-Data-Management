@@ -26,7 +26,7 @@ Follow these steps to install and run the application on your local machine.
 1. Clone this repository:
 
     ```bash
-    git clone https://github.com/hdeza/Gestion-Hojas-De-Vida-Docentes.git
+    git clone https://github.com/hdeza/Teacher-Resume-Data-Management.git
     cd Gestion-Hojas-De-Vida-Docentes
     ```
 
