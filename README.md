@@ -56,7 +56,10 @@ Sigue estos pasos para instalar y ejecutar la aplicación en tu máquina local.
 
 Toda este diseño puede encontrarlo en este link: [Diseño en Figma](https://www.figma.com/design/y6hNEJjOe1plNS2yGqdtPq/hojas-de-vida?node-id=0-1&t=RRxjzfHIJ5P72Ivf-1)
 
+## Base de Datos
+
 Para el manejo de los datos se diseñó la siguiente base de datos teniendo en cuenta los requerimientos del cliente: 
+
 ![image](https://github.com/user-attachments/assets/857b4829-6ca2-4617-9c88-167ef375df2d)
 
 ## Uso
