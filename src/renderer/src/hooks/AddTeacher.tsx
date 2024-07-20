@@ -22,7 +22,7 @@ export default function AddTeacher() {
   return (
     <>
       <button className="bg-white px-4 py-2 rounded-md flex " onClick={handleClickOpen}>
-        <AddIcon className="text-blue-500 mr-1" />
+        <AddIcon className="text-primary-blue mr-1" />
         <p className="font-medium ">Añadir docente</p>
       </button>
 

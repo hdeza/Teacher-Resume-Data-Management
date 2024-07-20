@@ -1,7 +1,5 @@
-import * as React from 'react'
-import Button from '@mui/material/Button'
+import React from 'react'
 import Dialog from '@mui/material/Dialog'
-import DialogActions from '@mui/material/DialogActions'
 import Slide from '@mui/material/Slide'
 import { TransitionProps } from '@mui/material/transitions'
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined'
@@ -32,7 +30,7 @@ export default function AlertDialogSlide() {
     <React.Fragment>
       <button
         onClick={handleClickOpen}
-        className="flex border-2 p-2 rounded-md bg-blue-600 text-white "
+        className="flex border-2 p-2 rounded-md bg-primary-blue text-white "
       >
         <VisibilityOutlinedIcon />
         <p className="pl-1 font-medium">Ver perfil</p>
@@ -43,9 +41,11 @@ export default function AlertDialogSlide() {
         keepMounted
         onClose={handleClose}
         aria-describedby="alert-dialog-slide-description"
+        maxWidth="md"
       >
-        <section className="flex justify-between px-4 pt-4">
-          <p className="text-xl font-semibold">Perfil Docente</p>
+        <section className="flex justify-between px-4 pt-4 ">
+          {/* sección del header */}
+          <p className="text-xl font-semibold ">Perfil Docente</p>
           <button onClick={handleClose} className="opacity-60">
             <CloseIcon />
           </button>
@@ -64,30 +64,54 @@ export default function AlertDialogSlide() {
                 <p className="text-sm opacity-80">Docente de Matematicas</p>
               </article>
             </section>
-            <section className="flex flex-col gap-y-2">
+            <section className="flex flex-col gap-y-2 pt-2">
               <article className="flex justify-between">
-                <p className="opacity-70">Experiencia</p>
+                <p className="opacity-70">Experiencia:</p>
                 <p className="font-semibold">5 años</p>
               </article>
               <article className="flex justify-between">
-                <p className="opacity-70">Educación</p>
+                <p className="opacity-70">Educación:</p>
                 <p className="font-semibold">Ingeniero Electronico</p>
               </article>
               <article className="flex justify-between">
-                <p className="opacity-70">Area</p>
+                <p className="opacity-70">Area:</p>
                 <p className="font-semibold">Matematica, Fisica</p>
               </article>
               <article className="flex justify-between">
-                <p className="opacity-70">Certificaciones</p>
+                <p className="opacity-70">Certificaciones:</p>
                 <p className="font-semibold">Docente Universitario</p>
               </article>
             </section>
-            <section className="m-auto">
-              <DownloadCv style="flex border-2 p-2 rounded-md bg-blue-600 text-white" />
+            <section className="mx-auto mt-6">
+              <DownloadCv style="flex border-2 p-2 rounded-md bg-primary-blue text-white" />
             </section>
           </section>
-          <section>
-            <p>Hola</p>
+          <section className="flex flex-col gap-y-2">
+            {/* Sección de información detallada del docente */}
+            <article>
+              <p className="font-bold text-xl pb-1">Sobre</p>
+              <p className="opacity-70 ">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto saepe alias fugit
+                suscipit unde aperiam nostrum, architecto sint officiis cum nam similique
+                repellendus, rem ipsum maiores illum excepturi? Alias, ea.
+              </p>
+            </article>
+            <article>
+              <p className="font-bold text-xl pb-1">Experiencia</p>
+              <ul className="opacity-70 list-disc pl-8">
+                <li>Profesor de Matematicas - Instituto XYZ (Enero 2015 - Actualidad)</li>
+                <li>Profesor de Matematicas - Instituto ABC (Agosto 2010 - Diciembre 2014)</li>
+              </ul>
+            </article>
+            <article>
+              <p className="font-bold text-xl pb-1">Educación</p>
+              <ul className="opacity-70 list-disc pl-8">
+                <li>
+                  Licenciatura en MatemáticasUniversidad Nacional Autónoma de México (UNAM) 2006 -
+                  2010
+                </li>
+              </ul>
+            </article>
           </section>
         </section>
       </Dialog>
