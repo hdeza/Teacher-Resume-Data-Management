@@ -26,7 +26,7 @@ Sigue estos pasos para instalar y ejecutar la aplicación en tu máquina local.
 1. Clona este repositorio:
 
     ```bash
-    git clone [https://github.com/tu-usuario/nombre-repositorio.git](https://github.com/hdeza/Gestion-Hojas-De-Vida-Docentes.git)
+    git clone https://github.com/hdeza/Gestion-Hojas-De-Vida-Docentes.git
     cd Gestion-Hojas-De-Vida-Docentes
     ```
 
