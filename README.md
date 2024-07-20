@@ -1,52 +1,52 @@
-# Gestión de Datos de Hoja de Vida de Docentes
+# Teacher Resume Data Management
 
-## Descripción
+## Description
 
-Esta es una aplicación de escritorio diseñada para la gestión de datos de hoja de vida de los docentes de una institución. La aplicación permite agregar nuevos docentes, buscar y filtrar docentes existentes, descargar los CVs, y ver el perfil detallado de cada docente.
+This is a desktop application designed for managing teacher resume data for an institution. The application allows adding new teachers, searching and filtering existing teachers, downloading CVs, and viewing each teacher's detailed profile.
 
-## Características
+## Features
 
-- **Agregar Docente**: Permite agregar nuevos docentes con su información de hoja de vida y datos de la entrevista.
-- **Buscar Docente**: Función de búsqueda para encontrar rápidamente a un docente por su nombre u otros criterio.
-- **Filtrar Docentes**: Permite filtrar la lista de docentes por diferentes criterios, como area, titulo, etc.
-- **Descargar CV**: Descarga el CV de un docente en formato PDF.
-- **Ver Perfil**: Visualiza el perfil completo de un docente con toda su información de hoja de vida y la entrevista.
+- **Add Teacher**: Allows adding new teachers with their resume information and interview data.
+- **Search Teacher**: Search function to quickly find a teacher by their name or other criteria.
+- **Filter Teachers**: Allows filtering the list of teachers by different criteria, such as area, title, etc.
+- **Download CV**: Download a teacher's CV in PDF format.
+- **View Profile**: View a teacher's complete profile with all their resume information and interview data.
 
-## Instalación
+## Installation
 
-Sigue estos pasos para instalar y ejecutar la aplicación en tu máquina local.
+Follow these steps to install and run the application on your local machine.
 
-### Requisitos
+### Requirements
 
-- Node.js (v14 o superior)
-- npm (v6 o superior)
+- Node.js (v14 or higher)
+- npm (v6 or higher)
 
-### Pasos
+### Steps
 
-1. Clona este repositorio:
+1. Clone this repository:
 
     ```bash
     git clone https://github.com/hdeza/Gestion-Hojas-De-Vida-Docentes.git
     cd Gestion-Hojas-De-Vida-Docentes
     ```
 
-2. Instala las dependencias:
+2. Install dependencies:
 
     ```bash
-    $ npm install
+    npm install
     ```
 
-3. Ejecuta la aplicación en modo desarrollo:
+3. Run the application in development mode:
 
    ```bash
-    $ npm run dev
+    npm run dev
     ```
 
 ## Recommended IDE Setup
 
 - [VSCode](https://code.visualstudio.com/) + [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) + [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
 
-## Para la construcción se diseñó las siguientes interfaces:
+## The following interfaces were designed for the build:
 ![image](https://github.com/user-attachments/assets/aa2b3985-8ac1-4427-9fa8-9cf204620c75)
 ![image](https://github.com/user-attachments/assets/4f0c0384-9a85-4910-9047-f6ba66ad271a)
 ![image](https://github.com/user-attachments/assets/b4ad74e5-801f-42a6-b291-55fb4ab9287d)
@@ -54,54 +54,49 @@ Sigue estos pasos para instalar y ejecutar la aplicación en tu máquina local.
 ![image](https://github.com/user-attachments/assets/5aa66f7e-85a3-481f-8474-340038ad03f2)
 ![image](https://github.com/user-attachments/assets/a27b37b8-c3c9-4cbb-b751-9f0a5109999d)
 
-Toda este diseño puede encontrarlo en este link: [Diseño en Figma](https://www.figma.com/design/y6hNEJjOe1plNS2yGqdtPq/hojas-de-vida?node-id=0-1&t=RRxjzfHIJ5P72Ivf-1)
+All this design can be found at this link: [Design on Figma](https://www.figma.com/design/y6hNEJjOe1plNS2yGqdtPq/hojas-de-vida?node-id=0-1&t=RRxjzfHIJ5P72Ivf-1)
 
-## Base de Datos
+## Database
 
-Para el manejo de los datos se diseñó la siguiente base de datos teniendo en cuenta los requerimientos del cliente: 
+To manage the data, the following database was designed considering the client's requirements:
 
 ![image](https://github.com/user-attachments/assets/857b4829-6ca2-4617-9c88-167ef375df2d)
 
-## Uso
+## Usage
 
-### Agregar Docente
+### Add Teacher
 
-1. Navega a la sección "Añadir Docente".
-2. Rellena los campos requeridos con la información del docente.
-3. Haz clic en "Agregar" para agregar el nuevo docente a la base de datos.
+1. Navigate to the "Add Teacher" section.
+2. Fill in the required fields with the teacher's information.
+3. Click "Add" to add the new teacher to the database.
 
-### Buscar y Filtrar Docentes
+### Search and Filter Teachers
 
-1. Usa la barra de búsqueda para encontrar un docente por nombre.
-2. Aplica filtros desde el panel de filtros para ajustar los resultados según los criterios deseados.
+1. Use the search bar to find a teacher by name.
+2. Apply filters from the filter panel to adjust the results according to the desired criteria.
 
-### Descargar CV
+### Download CV
 
-1. En la lista de docentes, busca el docente cuyo CV deseas descargar.
-2. Haz clic en el botón "Descargar CV".
+1. In the teacher list, find the teacher whose CV you want to download.
+2. Click the "Download CV" button.
 
-### Ver Perfil de un Docente
+### View Teacher Profile
 
-1. En la lista de docentes, haz clic en el botón "Ver Perfil" para ver su perfil completo.
-2. Se abrirá una vista detallada con toda la información de hoja de vida del docente y datos de la entrevista.
+1. In the teacher list, click the "View Profile" button to see their complete profile.
+2. A detailed view with all the teacher's resume information and interview data will open.
 
-## Contribución
+## Contribution
 
-¡Las contribuciones son bienvenidas! Si deseas contribuir a este proyecto, por favor sigue estos pasos:
+Contributions are welcome! If you want to contribute to this project, please follow these steps:
 
-1. Haz un fork del repositorio.
-2. Crea una nueva rama (`git checkout -b feature/nueva-caracteristica`).
-3. Realiza los cambios necesarios y commitea (`git commit -m 'Agrega nueva característica'`).
-4. Haz push a la rama (`git push origin feature/nueva-caracteristica`).
-5. Abre un Pull Request.
+1. Fork the repository.
+2. Create a new branch (`git checkout -b feature/new-feature`).
+3. Make the necessary changes and commit (`git commit -m 'Add new feature'`).
+4. Push to the branch (`git push origin feature/new-feature`).
+5. Open a Pull Request.
 
-## Contacto
+## Contact
 
-Para cualquier pregunta o comentario, puedes contactarnos a través de [Linkedin Armando](https://www.linkedin.com/in/armando-hern%C3%A1ndez-9178a7222/).
+For any questions or comments, you can contact us through [LinkedIn Armando](https://www.linkedin.com/in/armando-hern%C3%A1ndez-9178a7222/).
 
 ---
-
-
-
-
-
