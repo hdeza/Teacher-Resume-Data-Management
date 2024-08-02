@@ -13,6 +13,25 @@ export default function AddTeacher() {
   const [open, setOpen] = React.useState(false)
   const [page, setPage] = React.useState(1)
 
+  // Status variables for teacher data
+  const [name, setName] = React.useState('')
+  const [surName, setSurName] = React.useState('')
+  const [dni, setDni] = React.useState('')
+  const [phone, setPhone] = React.useState('')
+  const [degree, setDegree] = React.useState('')
+  const [university, setUniversity] = React.useState('')
+  const [year, setYear] = React.useState('')
+  const [enterprises, setEnterprises] = React.useState('')
+  const [experience, setExperience] = React.useState('')
+  const [area, setArea] = React.useState('')
+  const [receiptDate, setReceiptDate] = React.useState('')
+  const [typeReceipt, setTypeReceipt] = React.useState('')
+  const [recommendedBy, setRecommendedBy] = React.useState('')
+  const [importantFacts, setImportantFacts] = React.useState('')
+  const [generalRemarks, setGeneralRemarks] = React.useState('')
+  const [interviewObservations, setInterviewObservations] = React.useState('')
+  const [cvLink, setCVLink] = React.useState('')
+
   const handleClickOpen = () => {
     setOpen(true)
   }
@@ -28,11 +47,54 @@ export default function AddTeacher() {
   const selectPage = () => {
     switch (page) {
       case 1:
-        return <PageOneAdd />
+        return (
+          <PageOneAdd
+            name={name}
+            setName={setName}
+            surName={surName}
+            setSurName={setSurName}
+            dni={dni}
+            setDni={setDni}
+            degree={degree}
+            setDegree={setDegree}
+            phone={phone}
+            setPhone={setPhone}
+            university={university}
+            setUniversity={setUniversity}
+          />
+        )
       case 2:
-        return <PageTwoAdd />
+        return (
+          <PageTwoAdd
+            area={area}
+            setArea={setArea}
+            enterprises={enterprises}
+            setEnterprises={setEnterprises}
+            experience={experience}
+            setExperience={setExperience}
+            receiptDate={receiptDate}
+            setReceiptDate={setReceiptDate}
+            year={year}
+            setYear={setYear}
+            typeReceipt={typeReceipt}
+            setTypeReceipt={setTypeReceipt}
+          />
+        )
       case 3:
-        return <PageThreeAdd />
+        return (
+          <PageThreeAdd
+            cvLink={cvLink}
+            setCVLink={setCVLink}
+            generalRemarks={generalRemarks}
+            setGeneralRemarks={setGeneralRemarks}
+            importantFacts={importantFacts}
+            setImportantFacts={setImportantFacts}
+            interviewObservations={interviewObservations}
+            setInterviewObservations={setInterviewObservations}
+            recommendedBy={recommendedBy}
+            setRecommendedBy={setRecommendedBy}
+          />
+        )
     }
   }
 

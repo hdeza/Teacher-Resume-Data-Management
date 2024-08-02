@@ -1,23 +1,54 @@
 import React from 'react'
 
-export default function PageTwoAdd() {
+export default function PageTwoAdd({
+  year,
+  setYear,
+  enterprises,
+  setEnterprises,
+  experience,
+  setExperience,
+  area,
+  setArea,
+  receiptDate,
+  setReceiptDate,
+  typeReceipt,
+  setTypeReceipt
+}: {
+  year: string
+  setYear
+  enterprises: string
+  setEnterprises
+  experience: string
+  setExperience: React.Dispatch<React.SetStateAction<string>>
+  area: string
+  setArea: React.Dispatch<React.SetStateAction<string>>
+  receiptDate: string
+  setReceiptDate: React.Dispatch<React.SetStateAction<string>>
+  typeReceipt: string
+  setTypeReceipt: React.Dispatch<React.SetStateAction<string>>
+}) {
   return (
     <>
       <section className="px-8">
         <article className="flex flex-col pt-4 font-medium">
           <label className="text-lg">Año de nacimiento</label>
           <input
-            type="date"
-            placeholder="Seleccione el año"
+            type="text"
+            placeholder="AAAA"
+            maxLength={4}
             className="border p-2 bg-gray-100 font-light rounded-md"
+            value={year}
+            onChange={(e) => setYear(e.target.value)}
           />
         </article>
         <article className="flex flex-col pt-4 font-medium">
           <label className="text-lg">Lugar de experiencia</label>
           <input
-            type="number"
+            type="text"
             placeholder="Escriba la(s) empresa(s) (separado por coma)"
             className="border p-2 bg-gray-100 font-light rounded-md"
+            value={enterprises}
+            onChange={(e) => setEnterprises(e.target.value)}
           />
         </article>
         <article className="flex flex-col pt-4 font-medium">
@@ -26,6 +57,8 @@ export default function PageTwoAdd() {
             type="number"
             placeholder="Digite años de experiencia"
             className="border p-2 bg-gray-100 font-light rounded-md"
+            value={experience}
+            onChange={(e) => setExperience(e.target.value)}
           />
         </article>
         <article className="flex flex-col pt-4 font-medium">
@@ -34,6 +67,8 @@ export default function PageTwoAdd() {
             type="text"
             placeholder="Escriba el area"
             className="border p-2 bg-gray-100 font-light rounded-md"
+            value={area}
+            onChange={(e) => setArea(e.target.value)}
           />
         </article>
         <article className="flex flex-col  pt-4 font-medium">
@@ -42,14 +77,20 @@ export default function PageTwoAdd() {
             type="date"
             placeholder="Seleccione una fecha"
             className="border p-2 bg-gray-100 font-light rounded-md"
+            value={receiptDate}
+            onChange={(e) => setReceiptDate(e.target.value)}
           />
         </article>
         <article className="flex flex-col pt-4 font-medium">
           <label className="text-lg">Tipo de recepción</label>
-          <select className="border p-2 bg-gray-100 font-light rounded-md">
+          <select
+            className="border p-2 bg-gray-100 font-light rounded-md"
+            value={typeReceipt}
+            onChange={(e) => setTypeReceipt(e.target.value)}
+          >
             <option value="">Seleccione una opción</option>
-            <option value="1">Email</option>
-            <option value="2">WhatsApp</option>
+            <option value="1">Correo</option>
+            <option value="2">Físico</option>
           </select>
         </article>
       </section>

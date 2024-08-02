@@ -1,15 +1,28 @@
 import React, { useRef } from 'react'
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded'
-import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined'
-export default function PageThreeAdd() {
-  const fileInputRef = useRef<HTMLInputElement>(null)
-
-  const handleButtonClick = (event) => {
-    event.preventDefault() //esto para que no se cierre el dialog del ingreso de datos del docente
-    if (fileInputRef.current) {
-      fileInputRef.current.click() // Simula el clic en el input de tipo file
-    }
-  }
+export default function PageThreeAdd({
+  recommendedBy,
+  setRecommendedBy,
+  importantFacts,
+  setImportantFacts,
+  generalRemarks,
+  setGeneralRemarks,
+  interviewObservations,
+  setInterviewObservations,
+  cvLink,
+  setCVLink
+}: {
+  recommendedBy: string
+  setRecommendedBy: React.Dispatch<React.SetStateAction<string>>
+  importantFacts: string
+  setImportantFacts: React.Dispatch<React.SetStateAction<string>>
+  generalRemarks: string
+  setGeneralRemarks: React.Dispatch<React.SetStateAction<string>>
+  interviewObservations: string
+  setInterviewObservations: React.Dispatch<React.SetStateAction<string>>
+  cvLink: string
+  setCVLink: React.Dispatch<React.SetStateAction<string>>
+}) {
   return (
     <>
       <section className="px-8 min-h-300">
@@ -19,6 +32,8 @@ export default function PageThreeAdd() {
             type="text"
             placeholder="Escriba un nombre"
             className="border p-2 bg-gray-100 font-light rounded-md"
+            value={recommendedBy}
+            onChange={(e) => setRecommendedBy(e.target.value)}
           />
         </article>
         <article className="flex flex-col pt-4 font-medium">
@@ -27,6 +42,8 @@ export default function PageThreeAdd() {
             rows={2}
             placeholder="Escriba datos relevantes del docente..."
             className="border p-2 bg-gray-100 font-light rounded-md"
+            value={importantFacts}
+            onChange={(e) => setImportantFacts(e.target.value)}
           ></textarea>
         </article>
         <article className="flex flex-col pt-4 font-medium">
@@ -35,6 +52,8 @@ export default function PageThreeAdd() {
             rows={3}
             placeholder="Escriba algunas observaciones del docente..."
             className="border p-2 bg-gray-100 font-light rounded-md"
+            value={generalRemarks}
+            onChange={(e) => setGeneralRemarks(e.target.value)}
           ></textarea>
         </article>
         <article className="flex flex-col pt-4 font-medium">
@@ -43,18 +62,16 @@ export default function PageThreeAdd() {
             rows={3}
             placeholder="Escriba algunas observaciones de la entrevista..."
             className="border p-2 bg-gray-100 font-light rounded-md"
+            value={interviewObservations}
+            onChange={(e) => setInterviewObservations(e.target.value)}
           ></textarea>
         </article>
-        <article className="flex justify-end  pt-4 ">
-          <button onClick={handleButtonClick} className="flex border-2 p-2 rounded-md mr-3">
-            <FileUploadOutlinedIcon />
-            <p className="pl-1 font-medium">Subir CV</p>
-          </button>
-          <input //este input es el que se presiona como tal, sin embargo lo utilizo sin mostrarlo y uso su referencia
-            //para simular que se presiona el boton pero en realiad estas presionando el button de SUBIR CV
-            type="file"
-            ref={fileInputRef}
-            style={{ display: 'none' }} // Oculta el input
+        <article className="flex justify-between pt-4 ">
+          <input
+            placeholder="Pega aquí el enlace a tu CV en formato PDF"
+            className="border pl-2 bg-gray-100 font-light rounded-md w-3/4"
+            value={cvLink}
+            onChange={(e) => setCVLink(e.target.value)}
           />
           <button className="flex border-2 p-2 rounded-md bg-primary-blue text-white">
             <AddCircleOutlineRoundedIcon />
