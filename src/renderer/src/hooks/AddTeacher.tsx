@@ -5,9 +5,13 @@ import AddIcon from '@mui/icons-material/Add'
 import CloseIcon from '@mui/icons-material/Close'
 import Pagination from '@mui/material/Pagination'
 import Stack from '@mui/material/Stack'
+import PageOneAdd from '../components/addTeacher/PageOneAdd'
+import PageTwoAdd from '../components/addTeacher/PageTwoAdd'
+import PageThreeAdd from '../components/addTeacher/PageThreeAdd'
 
 export default function AddTeacher() {
   const [open, setOpen] = React.useState(false)
+  const [page, setPage] = React.useState(1)
 
   const handleClickOpen = () => {
     setOpen(true)
@@ -15,6 +19,21 @@ export default function AddTeacher() {
 
   const handleClose = () => {
     setOpen(false)
+  }
+
+  const handlePage = (event, value) => {
+    setPage(value)
+  }
+
+  const selectPage = () => {
+    switch (page) {
+      case 1:
+        return <PageOneAdd />
+      case 2:
+        return <PageTwoAdd />
+      case 3:
+        return <PageThreeAdd />
+    }
   }
 
   return (
@@ -46,55 +65,12 @@ export default function AddTeacher() {
             </button>
           </article>
         </section>
-        <section className="px-8">
-          <article className="flex flex-col  pt-4 font-medium">
-            <label className="text-lg">Nombre</label>
-            <input
-              type="text"
-              placeholder="Escriba el nombre del docente"
-              className="border p-2 bg-gray-100 font-light rounded-md"
-            />
-          </article>
-          <article className="flex flex-col pt-4 font-medium">
-            <label className="text-lg">Apellido</label>
-            <input
-              type="text"
-              placeholder="Escriba el apellido del docente"
-              className="border p-2 bg-gray-100 font-light rounded-md"
-            />
-          </article>
-          <article className="flex flex-col pt-4 font-medium">
-            <label className="text-lg">N°Documento</label>
-            <input
-              type="number"
-              placeholder="Digite la cédula"
-              className="border p-2 bg-gray-100 font-light rounded-md"
-            />
-          </article>
-          <article className="flex flex-col pt-4 font-medium">
-            <label className="text-lg">Telefono</label>
-            <input
-              type="number"
-              placeholder="Digite número telefónico"
-              className="border p-2 bg-gray-100 font-light rounded-md"
-            />
-          </article>
-          <article className="flex flex-col pt-4 font-medium">
-            <label className="text-lg">Título</label>
-            <input
-              type="text"
-              placeholder="Escriba el titulo (pregrado)"
-              className="border p-2 bg-gray-100 font-light rounded-md"
-            />
-          </article>
-        </section>
-        <DialogActions>
-          <div className="py-4">
-            <Stack spacing={2}>
-              <Pagination count={3} shape="rounded" />
-            </Stack>
-          </div>
-        </DialogActions>
+        {selectPage()}
+        <div className="my-4 flex justify-end pr-4">
+          <Stack spacing={2}>
+            <Pagination count={3} shape="rounded" page={page} onChange={handlePage} />
+          </Stack>
+        </div>
       </Dialog>
     </>
   )

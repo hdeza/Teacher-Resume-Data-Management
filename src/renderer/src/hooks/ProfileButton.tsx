@@ -15,7 +15,7 @@ const Transition = React.forwardRef(function Transition(
   return <Slide direction="up" ref={ref} {...props} />
 })
 
-export default function AlertDialogSlide() {
+export default function ProfileButton() {
   const [open, setOpen] = React.useState(false)
 
   const handleClickOpen = () => {
