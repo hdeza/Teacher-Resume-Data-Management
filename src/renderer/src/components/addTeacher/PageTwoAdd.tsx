@@ -12,7 +12,9 @@ export default function PageTwoAdd({
   receiptDate,
   setReceiptDate,
   typeReceipt,
-  setTypeReceipt
+  setTypeReceipt,
+  interviewDate,
+  setInterviewDate
 }: {
   year: string
   setYear
@@ -26,6 +28,8 @@ export default function PageTwoAdd({
   setReceiptDate: React.Dispatch<React.SetStateAction<string>>
   typeReceipt: string
   setTypeReceipt: React.Dispatch<React.SetStateAction<string>>
+  interviewDate: string
+  setInterviewDate: React.Dispatch<React.SetStateAction<string>>
 }) {
   return (
     <>
@@ -92,6 +96,16 @@ export default function PageTwoAdd({
             <option value="1">Correo</option>
             <option value="2">Físico</option>
           </select>
+        </article>
+        <article className="flex flex-col  pt-4 font-medium">
+          <label className="text-lg">Fecha de entrevista</label>
+          <input
+            type="date"
+            placeholder="Seleccione una fecha"
+            className="border p-2 bg-gray-100 font-light rounded-md"
+            value={interviewDate}
+            onChange={(e) => setInterviewDate(e.target.value)}
+          />
         </article>
       </section>
     </>

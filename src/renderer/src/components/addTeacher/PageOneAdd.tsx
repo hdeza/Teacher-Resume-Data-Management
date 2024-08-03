@@ -11,6 +11,8 @@ export default function PageOneAdd({
   setPhone,
   degree,
   setDegree,
+  graduationDate,
+  setGraduationDate,
   university,
   setUniversity
 }: {
@@ -24,6 +26,8 @@ export default function PageOneAdd({
   setPhone: React.Dispatch<React.SetStateAction<string>>
   degree: string
   setDegree: React.Dispatch<React.SetStateAction<string>>
+  graduationDate: string
+  setGraduationDate: React.Dispatch<React.SetStateAction<string>>
   university: string
   setUniversity: React.Dispatch<React.SetStateAction<string>>
 }) {
@@ -78,6 +82,16 @@ export default function PageOneAdd({
             className="border p-2 bg-gray-100 font-light rounded-md"
             value={degree}
             onChange={(e) => setDegree(e.target.value)}
+          />
+        </article>
+        <article className="flex flex-col  pt-4 font-medium">
+          <label className="text-lg">Fecha de graduación</label>
+          <input
+            type="date"
+            placeholder="Seleccione una fecha"
+            className="border p-2 bg-gray-100 font-light rounded-md"
+            value={graduationDate}
+            onChange={(e) => setGraduationDate(e.target.value)}
           />
         </article>
         <article className="flex flex-col  pt-4 font-medium">

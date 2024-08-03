@@ -7,6 +7,7 @@ export default function PageThreeAdd({
   setImportantFacts,
   generalRemarks,
   setGeneralRemarks,
+
   interviewObservations,
   setInterviewObservations,
   cvLink,
@@ -17,6 +18,7 @@ export default function PageThreeAdd({
   importantFacts: string
   setImportantFacts: React.Dispatch<React.SetStateAction<string>>
   generalRemarks: string
+
   setGeneralRemarks: React.Dispatch<React.SetStateAction<string>>
   interviewObservations: string
   setInterviewObservations: React.Dispatch<React.SetStateAction<string>>
@@ -56,6 +58,7 @@ export default function PageThreeAdd({
             onChange={(e) => setGeneralRemarks(e.target.value)}
           ></textarea>
         </article>
+
         <article className="flex flex-col pt-4 font-medium">
           <label className="text-lg">Observaciones de la Entrevista</label>
           <textarea

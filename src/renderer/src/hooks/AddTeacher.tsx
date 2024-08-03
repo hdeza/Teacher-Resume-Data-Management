@@ -19,6 +19,7 @@ export default function AddTeacher() {
   const [dni, setDni] = React.useState('')
   const [phone, setPhone] = React.useState('')
   const [degree, setDegree] = React.useState('')
+  const [graduationDate, setGraduationDate] = React.useState('')
   const [university, setUniversity] = React.useState('')
   const [year, setYear] = React.useState('')
   const [enterprises, setEnterprises] = React.useState('')
@@ -29,6 +30,7 @@ export default function AddTeacher() {
   const [recommendedBy, setRecommendedBy] = React.useState('')
   const [importantFacts, setImportantFacts] = React.useState('')
   const [generalRemarks, setGeneralRemarks] = React.useState('')
+  const [interviewDate, setInterviewDate] = React.useState('')
   const [interviewObservations, setInterviewObservations] = React.useState('')
   const [cvLink, setCVLink] = React.useState('')
 
@@ -61,6 +63,8 @@ export default function AddTeacher() {
             setPhone={setPhone}
             university={university}
             setUniversity={setUniversity}
+            graduationDate={graduationDate}
+            setGraduationDate={setGraduationDate}
           />
         )
       case 2:
@@ -78,6 +82,8 @@ export default function AddTeacher() {
             setYear={setYear}
             typeReceipt={typeReceipt}
             setTypeReceipt={setTypeReceipt}
+            interviewDate={interviewDate}
+            setInterviewDate={setInterviewDate}
           />
         )
       case 3:
