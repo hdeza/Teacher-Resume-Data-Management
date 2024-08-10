@@ -40,6 +40,25 @@ export default function AddTeacher() {
 
   const handleClose = () => {
     setOpen(false)
+    setName('')
+    setSurName('')
+    setDni('')
+    setPhone('')
+    setDegree('')
+    setPhone('')
+    setGraduationDate('')
+    setUniversity('')
+    setYear('')
+    setEnterprises('')
+    setExperience('')
+    setArea('')
+    setTypeReceipt('')
+    setRecommendedBy('')
+    setImportantFacts('')
+    setGeneralRemarks('')
+    setInterviewDate('')
+    setInterviewObservations('')
+    setCVLink('')
   }
 
   const handlePage = (event, value) => {
