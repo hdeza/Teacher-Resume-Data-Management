@@ -14,7 +14,9 @@ export default function PageOneAdd({
   graduationDate,
   setGraduationDate,
   university,
-  setUniversity
+  setUniversity,
+  city,
+  setCity
 }: {
   name: string
   setName: React.Dispatch<React.SetStateAction<string>>
@@ -30,6 +32,8 @@ export default function PageOneAdd({
   setGraduationDate: React.Dispatch<React.SetStateAction<string>>
   university: string
   setUniversity: React.Dispatch<React.SetStateAction<string>>
+  city: string
+  setCity: React.Dispatch<React.SetStateAction<string>>
 }) {
   return (
     <>
@@ -72,6 +76,16 @@ export default function PageOneAdd({
             className="border p-2 bg-gray-100 font-light rounded-md"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
+          />
+        </article>
+        <article className="flex flex-col pt-4 font-medium">
+          <label className="text-lg">Ciudad</label>
+          <input
+            type="text"
+            placeholder="Escriba la ciudad"
+            className="border p-2 bg-gray-100 font-light rounded-md"
+            value={city}
+            onChange={(e) => setCity(e.target.value)}
           />
         </article>
         <article className="flex flex-col pt-4 font-medium">

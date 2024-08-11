@@ -7,7 +7,6 @@ export default function PageThreeAdd({
   setImportantFacts,
   generalRemarks,
   setGeneralRemarks,
-
   interviewObservations,
   setInterviewObservations,
   cvLink,
@@ -18,7 +17,6 @@ export default function PageThreeAdd({
   importantFacts: string
   setImportantFacts: React.Dispatch<React.SetStateAction<string>>
   generalRemarks: string
-
   setGeneralRemarks: React.Dispatch<React.SetStateAction<string>>
   interviewObservations: string
   setInterviewObservations: React.Dispatch<React.SetStateAction<string>>

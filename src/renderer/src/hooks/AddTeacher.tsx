@@ -8,6 +8,7 @@ import Stack from '@mui/material/Stack'
 import PageOneAdd from '../components/addTeacher/PageOneAdd'
 import PageTwoAdd from '../components/addTeacher/PageTwoAdd'
 import PageThreeAdd from '../components/addTeacher/PageThreeAdd'
+import supabase from '../database/supabase'
 
 export default function AddTeacher() {
   const [open, setOpen] = React.useState(false)
@@ -33,6 +34,7 @@ export default function AddTeacher() {
   const [interviewDate, setInterviewDate] = React.useState('')
   const [interviewObservations, setInterviewObservations] = React.useState('')
   const [cvLink, setCVLink] = React.useState('')
+  const [city, setCity] = React.useState('')
 
   const handleClickOpen = () => {
     setOpen(true)
@@ -59,6 +61,7 @@ export default function AddTeacher() {
     setInterviewDate('')
     setInterviewObservations('')
     setCVLink('')
+    setPage(1)
   }
 
   const handlePage = (event, value) => {
@@ -84,6 +87,8 @@ export default function AddTeacher() {
             setUniversity={setUniversity}
             graduationDate={graduationDate}
             setGraduationDate={setGraduationDate}
+            city={city}
+            setCity={setCity}
           />
         )
       case 2:
@@ -121,6 +126,110 @@ export default function AddTeacher() {
           />
         )
     }
+  }
+
+  //Ingreso de datos para los docentes
+  const handleSubmit = (e) => {
+    let idCity
+    let idArea
+    let idDegree
+    e.preventDefault()
+    // TODO: Enviar datos a la base de datos
+    // TODO: Validar los datos antes de enviarlos
+    // TODO: Mostrar un mensaje de éxito o error al finalizar el proceso
+
+    // Add areas
+    const addAreas = async () => {
+      const { data, error } = await supabase
+        .from('areas')
+        .insert([{ nombre: area }])
+        .select()
+      if (error) {
+        console.error('Error fetching areas:', error)
+      } else {
+        console.log('Areas added successfully')
+        idArea = data[0].idarea // se obtiene el id del area
+      }
+    }
+
+    const addUniversity = async () => {
+      const { data, error } = await supabase
+        .from('universidades')
+        .insert([{ nombre: university }])
+        .select()
+      if (error) {
+        console.error('Error fetching university:', error)
+      } else {
+        console.log('University added successfully')
+      }
+    }
+
+    // Ingreso de Ciudades
+    const addCity = async () => {
+      const { data, error } = await supabase
+        .from('ciudades')
+        .insert([{ nombre: city }]) // se inserta el nombre de la ciudad del docente
+        .select()
+      if (error) {
+        console.error('Error fetching cities:', error)
+      } else {
+        console.log('Cities added successfully')
+        idCity = data[0].idciudad // se obtiene el id de la ciudad
+      }
+    }
+    // Ingreso de Docente
+    const addTeacher = async () => {
+      const { data, error } = await supabase
+        .from('docentes')
+        .insert([
+          {
+            documentoid: dni,
+            nombre: name,
+            apellido: surName,
+            fechanacimiento: year,
+            tiempoexperiencia: experience,
+            observaciongeneral: generalRemarks,
+            recomendado: recommendedBy,
+            datosimportantes: importantFacts,
+            ciudad: idCity // aqui se ingresa el id de la ciudad
+          }
+        ])
+        .select()
+      if (error) {
+        console.error('Error adding teacher:', error)
+      } else {
+        console.log('Teacher added successfully')
+      }
+    }
+
+    const addDregree = async () => {
+      const { data, error } = await supabase
+        .from('titulos')
+        .insert([{ nombre: degree, areaestudio: idArea, univesidad: university }])
+        .select()
+      if (error) {
+        console.error('Error fetching degree:', error)
+      } else {
+        console.log('Degree added successfully')
+        idDegree = data[0].idtitulo // se obtiene el id del título
+      }
+    }
+
+    const addStudies = async () => {
+      const { data, error } = await supabase
+        .from('estudios')
+        .insert([{ docente: dni, titulo: idDegree, univesidad: university }])
+        .select()
+      if (error) {
+        console.error('Error fetching studies:', error)
+      } else {
+        console.log('Studies added successfully')
+      }
+    }
+
+    //SEGUIR POR EL NUMERO 7
+
+    handleClose()
   }
 
   return (
