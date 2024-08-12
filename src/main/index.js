@@ -13,9 +13,14 @@ function createWindow() {
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
-      sandbox: false
+      sandbox: false,
+      nodeIntegration: true, // Habilita Node.js
+      contextIsolation: false // Desactiva el aislamiento de contexto
     }
   })
+
+  // Maximiza la ventana al crearla
+  mainWindow.maximize()
 
   mainWindow.on('ready-to-show', () => {
     mainWindow.show()

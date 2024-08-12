@@ -1,6 +1,5 @@
 import * as React from 'react'
 import Dialog from '@mui/material/Dialog'
-import DialogActions from '@mui/material/DialogActions'
 import AddIcon from '@mui/icons-material/Add'
 import CloseIcon from '@mui/icons-material/Close'
 import Pagination from '@mui/material/Pagination'
@@ -62,6 +61,8 @@ export default function AddTeacher() {
     setInterviewObservations('')
     setCVLink('')
     setPage(1)
+    setCity('')
+    setReceiptDate('')
   }
 
   const handlePage = (event, value) => {
@@ -123,36 +124,91 @@ export default function AddTeacher() {
             setInterviewObservations={setInterviewObservations}
             recommendedBy={recommendedBy}
             setRecommendedBy={setRecommendedBy}
+            handleSubmit={handleSubmit}
           />
         )
     }
   }
 
-  //Ingreso de datos para los docentes
-  const handleSubmit = (e) => {
-    let idCity
-    let idArea
-    let idDegree
-    e.preventDefault()
-    // TODO: Enviar datos a la base de datos
-    // TODO: Validar los datos antes de enviarlos
-    // TODO: Mostrar un mensaje de éxito o error al finalizar el proceso
+  // funciones para ingreso de datos
 
-    // Add areas
-    const addAreas = async () => {
+  // Estas son las variables que guardaran los id de las instancias en la base de datos para poder relacionarlas
+  let idCity
+  let idArea
+  let idDegree
+  let idTypeReceipt
+  let idEnterprise
+
+  // TODO: Validar los datos antes de enviarlo
+
+  const addAreas = async () => {
+    const checkArea = async (area: string) => {
+      let { data: dataArea, error } = await supabase
+        .from('areas')
+        .select('idarea')
+        .eq('nombre', area) // traemos de la base de datos el id donde el nombre es igual al area
+      console.log(dataArea)
+      if (error) {
+        if (error.code === 'PGRST116') {
+          // El error PGRST116 indica que no se encontró ningún registro
+          return false
+        }
+        console.error('Error fetching area check:', error)
+        return false
+      } else {
+        // Asegúrate de que dataArea es un array y tiene al menos un elemento
+        if (dataArea && Array.isArray(dataArea) && dataArea.length > 0) {
+          // si existe algun dato (diferente de nulo)
+          idArea = dataArea[0].idarea // se obtiene el id del area existente
+          return true // esto quiere decir que si existe esa area dentro de la base de datos
+        } else {
+          return false // esto quiere decir que no existe esta area en la base de datos
+        }
+      }
+    }
+
+    const areaExists = await checkArea(area) // creamos esta instancia que va guardar TRUE o FALSE
+
+    if (!areaExists) {
+      // Si no exite el area ingresada en la base de datos entonces la agregamos
       const { data, error } = await supabase
         .from('areas')
         .insert([{ nombre: area }])
-        .select()
+        .select() // insertamos el dato correpondiente en la tabla
       if (error) {
         console.error('Error fetching areas:', error)
       } else {
         console.log('Areas added successfully')
-        idArea = data[0].idarea // se obtiene el id del area
+        idArea = data[0].idarea // se obtiene el id del area añadida
+      }
+    }
+  }
+
+  const addUniversity = async () => {
+    const checkUniversity = async (university: string) => {
+      const { data, error } = await supabase
+        .from('universidades')
+        .select('nombre')
+        .eq('nombre', university)
+      if (error) {
+        if (error.code === 'PGRST116') {
+          // El error PGRST116 indica que no se encontró ningún registro
+          return false
+        }
+        console.error('Error fetching university check:', error)
+        return false
+      } else {
+        if (data && Array.isArray(data) && data.length > 0) {
+          return true
+        } else {
+          return false
+        }
       }
     }
 
-    const addUniversity = async () => {
+    const universityExists = await checkUniversity(university)
+
+    if (!universityExists) {
       const { data, error } = await supabase
         .from('universidades')
         .insert([{ nombre: university }])
@@ -163,9 +219,32 @@ export default function AddTeacher() {
         console.log('University added successfully')
       }
     }
+  }
 
-    // Ingreso de Ciudades
-    const addCity = async () => {
+  // Ingreso de Ciudades
+  const addCity = async () => {
+    const checkCity = async (city: string) => {
+      const { data, error } = await supabase.from('ciudades').select('idciudad').eq('nombre', city)
+      if (error) {
+        if (error.code === 'PGRST116') {
+          // El error PGRST116 indica que no se encontró ningún registro
+          return false
+        }
+        console.error('Error fetching city check:', error)
+        return false
+      } else {
+        if (data && Array.isArray(data) && data.length > 0) {
+          idCity = data[0].idciudad
+          return true
+        } else {
+          return false
+        }
+      }
+    }
+
+    const cityExists = await checkCity(city)
+
+    if (!cityExists) {
       const { data, error } = await supabase
         .from('ciudades')
         .insert([{ nombre: city }]) // se inserta el nombre de la ciudad del docente
@@ -177,8 +256,33 @@ export default function AddTeacher() {
         idCity = data[0].idciudad // se obtiene el id de la ciudad
       }
     }
-    // Ingreso de Docente
-    const addTeacher = async () => {
+  }
+  // Ingreso de Docente
+  const addTeacher = async () => {
+    const checkTeacher = async (dni: string) => {
+      const { data, error } = await supabase
+        .from('docentes')
+        .select('documentoid')
+        .eq('documentoid', dni)
+      if (error) {
+        if (error.code === 'PGRST116') {
+          // El error PGRST116 indica que no se encontró ningún registro
+          return false
+        }
+        console.error('Error fetching teacher check:', error)
+        return false
+      } else {
+        if (data && Array.isArray(data) && data.length > 0) {
+          return true
+        } else {
+          return false
+        }
+      }
+    }
+
+    const teacherExists = await checkTeacher(dni)
+
+    if (!teacherExists) {
       const { data, error } = await supabase
         .from('docentes')
         .insert([
@@ -200,9 +304,37 @@ export default function AddTeacher() {
       } else {
         console.log('Teacher added successfully')
       }
+    } else {
+      //TODO: error docente ya existe
+      console.log('El docente ya existe en la base de datos.')
     }
+  }
 
-    const addDregree = async () => {
+  const addDregree = async () => {
+    const checkDregree = async (degree: string, university: string) => {
+      const { data, error } = await supabase
+        .from('titulos')
+        .select('idtitulo')
+        .eq('nombre', degree)
+        .eq('university', university)
+      if (error) {
+        if (error.code === 'PGRST116') {
+          // El error PGRST116 indica que no se encontró ningún registro
+          return false
+        }
+        console.error('Error fetching degree check:', error)
+        return false
+      } else {
+        if (data && Array.isArray(data) && data.length > 0) {
+          idDegree = data[0].idtitulo // se obtiene el id del grado
+          return true
+        } else {
+          return false
+        }
+      }
+    }
+    const degreeExists = await checkDregree(degree, university)
+    if (!degreeExists) {
       const { data, error } = await supabase
         .from('titulos')
         .insert([{ nombre: degree, areaestudio: idArea, univesidad: university }])
@@ -214,22 +346,193 @@ export default function AddTeacher() {
         idDegree = data[0].idtitulo // se obtiene el id del título
       }
     }
+  }
 
-    const addStudies = async () => {
+  const addStudies = async () => {
+    const { data, error } = await supabase
+      .from('estudios')
+      .insert([{ docente: dni, titulo: idDegree, univesidad: university }])
+      .select()
+    if (error) {
+      console.error('Error fetching studies:', error)
+    } else {
+      console.log('Studies added successfully')
+    }
+  }
+
+  const addPhone = async () => {
+    const checkPhone = async (phone: string) => {
       const { data, error } = await supabase
-        .from('estudios')
-        .insert([{ docente: dni, titulo: idDegree, univesidad: university }])
-        .select()
+        .from('telefonos')
+        .select('numerotel')
+        .eq('numerotel', phone)
       if (error) {
-        console.error('Error fetching studies:', error)
+        if (error.code === 'PGRST116') {
+          // El error PGRST116 indica que no se encontró ningún registro
+          return false
+        }
+        console.error('Error fetching phone check:', error)
+        return false
       } else {
-        console.log('Studies added successfully')
+        if (data && Array.isArray(data) && data.length > 0) {
+          return true
+        } else {
+          return false
+        }
       }
     }
 
-    //SEGUIR POR EL NUMERO 7
+    const phoneExists = await checkPhone(phone)
+    if (!phoneExists) {
+      const { data, error } = await supabase
+        .from('telefonos')
+        .insert([{ numerotel: phone, docente: dni }])
+        .select()
+      if (error) {
+        console.error('Error fetching phone:', error)
+      } else {
+        console.log('Phone added successfully')
+      }
+    }
+  }
 
-    handleClose()
+  const addTypeReceipt = async () => {
+    const checkTypeReceipt = async (type: string) => {
+      const { data, error } = await supabase
+        .from('tiposrecepcion')
+        .select('idtiporecepcion')
+        .eq('nombre', type)
+      if (error) {
+        if (error.code === 'PGRST116') {
+          // El error PGRST116 indica que no se encontró ningún registro
+          return false
+        }
+        console.error('Error fetching type receipt check:', error)
+        return false
+      } else {
+        if (data && Array.isArray(data) && data.length > 0) {
+          idTypeReceipt = data[0].idtiporecepcion
+          return true
+        } else {
+          return false
+        }
+      }
+    }
+    const typeReceiptExists = await checkTypeReceipt(typeReceipt)
+    if (!typeReceiptExists) {
+      const { data, error } = await supabase
+        .from('tiposrecepcion')
+        .insert([{ nombre: typeReceipt }])
+        .select()
+      if (error) {
+        console.error('Error fetching type receipt:', error)
+      } else {
+        console.log('Type receipt added successfully')
+        idTypeReceipt = data[0].idtiporecepcion // guardamos el id del tipo de recepcion agregado
+      }
+    }
+  }
+
+  const addCv = async () => {
+    const { data, error } = await supabase
+      .from('resumes')
+      .insert([{ docente: dni, fecharecepcion: receiptDate, recepcion: idTypeReceipt }])
+      .select()
+    if (error) {
+      console.error('Error fetching cv:', error)
+    } else {
+      console.log('CV added successfully')
+    }
+  }
+
+  const addInterview = async () => {
+    const { data, error } = await supabase
+      .from('entrevistas')
+      .insert([
+        { fecha: interviewDate, observacionentrevista: interviewObservations, docente: dni }
+      ])
+      .select()
+    if (error) {
+      console.error('Error fetching interview:', error)
+    } else {
+      console.log('Interview added successfully')
+    }
+  }
+
+  const addEnterprise = async () => {
+    const checkEnterprise = async (enterprise: string) => {
+      const { data, error } = await supabase
+        .from('empresas')
+        .select('idempresa')
+        .eq('nombre', enterprise)
+      if (error) {
+        if (error.code === 'PGRST116') {
+          // El error PGRST116 indica que no se encontró ningún registro
+          return false
+        }
+        console.error('Error fetching enterprise check:', error)
+        return false
+      } else {
+        if (data && Array.isArray(data) && data.length > 0) {
+          idEnterprise = data[0].idempresa
+          return true
+        } else {
+          return false
+        }
+      }
+    }
+    const enterpriseExists = await checkEnterprise(enterprises)
+    if (!enterpriseExists) {
+      const { data, error } = await supabase
+        .from('empresas')
+        .insert([{ nombre: enterprises }])
+        .select()
+      if (error) {
+        console.error('Error fetching enterprises:', error)
+      } else {
+        console.log('Enterprises added successfully')
+        idEnterprise = data[0].idempresa // se obtiene el id de la empresa
+      }
+    }
+  }
+
+  const addJob = async () => {
+    const { data, error } = await supabase
+      .from('trabajos')
+      .insert([
+        {
+          docente: dni,
+          empresa: idEnterprise
+        }
+      ])
+      .select()
+    if (error) {
+      console.error('Error fetching job:', error)
+    } else {
+      console.log('Job added successfully')
+    }
+  }
+
+  //Ingreso de datos para los docentes
+  const handleSubmit = async () => {
+    try {
+      await addAreas()
+      await addUniversity()
+      await addCity()
+      await addTeacher()
+      await addDregree()
+      await addStudies()
+      await addPhone()
+      await addTypeReceipt()
+      await addCv()
+      await addInterview()
+      await addEnterprise()
+      await addJob()
+      // Procedemos a cerrar
+      handleClose()
+    } catch (error) {
+      console.error('Error during submission:', error)
+    }
   }
 
   return (

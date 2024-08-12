@@ -1,20 +1,17 @@
-import { contextBridge } from 'electron'
-import { electronAPI } from '@electron-toolkit/preload'
+// preload/index.js
 
-// Custom APIs for renderer
-const api = {}
+// Si no necesitas exponer APIs específicas o hacer algún trabajo
+// en el contexto de preload, este archivo puede permanecer simple.
 
-// Use `contextBridge` APIs to expose Electron APIs to
-// renderer only if context isolation is enabled, otherwise
-// just add to the DOM global.
-if (process.contextIsolated) {
-  try {
-    contextBridge.exposeInMainWorld('electron', electronAPI)
-    contextBridge.exposeInMainWorld('api', api)
-  } catch (error) {
-    console.error(error)
-  }
-} else {
-  window.electron = electronAPI
-  window.api = api
+console.log('Preload script is running')
+
+// Ejemplo de cómo exponer una API personalizada en el objeto `window`.
+// Puedes agregar más métodos a esta API según lo necesites.
+window.myCustomAPI = {
+  example: () => console.log('This is an example API')
 }
+
+// Nota: Con `nodeIntegration: true`, puedes usar directamente
+// las APIs de Node.js en el renderer, así que no necesitas hacer
+// mucho más en este archivo, a menos que quieras estructurar
+// tu aplicación de una manera específica.

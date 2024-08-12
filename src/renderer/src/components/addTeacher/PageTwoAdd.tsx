@@ -93,8 +93,8 @@ export default function PageTwoAdd({
             onChange={(e) => setTypeReceipt(e.target.value)}
           >
             <option value="">Seleccione una opción</option>
-            <option value="1">Correo</option>
-            <option value="2">Físico</option>
+            <option value="Correo">Correo</option>
+            <option value="Fisico">Físico</option>
           </select>
         </article>
         <article className="flex flex-col  pt-4 font-medium">

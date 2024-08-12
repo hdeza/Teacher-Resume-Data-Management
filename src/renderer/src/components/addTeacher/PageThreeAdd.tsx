@@ -10,7 +10,8 @@ export default function PageThreeAdd({
   interviewObservations,
   setInterviewObservations,
   cvLink,
-  setCVLink
+  setCVLink,
+  handleSubmit
 }: {
   recommendedBy: string
   setRecommendedBy: React.Dispatch<React.SetStateAction<string>>
@@ -22,6 +23,7 @@ export default function PageThreeAdd({
   setInterviewObservations: React.Dispatch<React.SetStateAction<string>>
   cvLink: string
   setCVLink: React.Dispatch<React.SetStateAction<string>>
+  handleSubmit: () => void
 }) {
   return (
     <>
@@ -74,7 +76,10 @@ export default function PageThreeAdd({
             value={cvLink}
             onChange={(e) => setCVLink(e.target.value)}
           />
-          <button className="flex border-2 p-2 rounded-md bg-primary-blue text-white">
+          <button
+            className="flex border-2 p-2 rounded-md bg-primary-blue text-white"
+            onClick={handleSubmit}
+          >
             <AddCircleOutlineRoundedIcon />
             <p className="pl-1 font-medium">Añadir</p>
           </button>
