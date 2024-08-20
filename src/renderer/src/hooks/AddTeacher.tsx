@@ -147,7 +147,6 @@ export default function AddTeacher() {
         .from('areas')
         .select('idarea')
         .eq('nombre', area) // traemos de la base de datos el id donde el nombre es igual al area
-      console.log(dataArea)
       if (error) {
         if (error.code === 'PGRST116') {
           // El error PGRST116 indica que no se encontró ningún registro
@@ -316,7 +315,7 @@ export default function AddTeacher() {
         .from('titulos')
         .select('idtitulo')
         .eq('nombre', degree)
-        .eq('university', university)
+        .eq('universidad', university)
       if (error) {
         if (error.code === 'PGRST116') {
           // El error PGRST116 indica que no se encontró ningún registro
@@ -337,7 +336,7 @@ export default function AddTeacher() {
     if (!degreeExists) {
       const { data, error } = await supabase
         .from('titulos')
-        .insert([{ nombre: degree, areaestudio: idArea, univesidad: university }])
+        .insert([{ nombre: degree, areaestudio: idArea, universidad: university }])
         .select()
       if (error) {
         console.error('Error fetching degree:', error)
@@ -351,7 +350,7 @@ export default function AddTeacher() {
   const addStudies = async () => {
     const { data, error } = await supabase
       .from('estudios')
-      .insert([{ docente: dni, titulo: idDegree, univesidad: university }])
+      .insert([{ docente: dni, titulo: idDegree, fecha: graduationDate }])
       .select()
     if (error) {
       console.error('Error fetching studies:', error)
@@ -436,7 +435,9 @@ export default function AddTeacher() {
   const addCv = async () => {
     const { data, error } = await supabase
       .from('resumes')
-      .insert([{ docente: dni, fecharecepcion: receiptDate, recepcion: idTypeReceipt }])
+      .insert([
+        { docente: dni, fecharecepcion: receiptDate, recepcion: idTypeReceipt, cvlink: cvLink }
+      ])
       .select()
     if (error) {
       console.error('Error fetching cv:', error)
