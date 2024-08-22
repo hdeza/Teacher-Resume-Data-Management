@@ -35,7 +35,7 @@ export default function TeacherCard({ teacher }: { teacher: teacherCardInfo }) {
   }
   return (
     <>
-      <div className="border-2 p-7 max-w-xs">
+      <div className="border-2 p-7 max-w-xs flex flex-col justify-between">
         <section className="flex">
           <div className="flex flex-col justify-center">
             <PersonOutlineOutlinedIcon sx={{ fontSize: 35 }} />

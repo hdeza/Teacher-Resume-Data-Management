@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import TeacherCard from '../hooks/TeacherCard'
 import supabase from '../database/supabase'
+import Skeleton from '@mui/material/Skeleton'
 
 interface teacherCardInfo {
   documentoid: string | undefined
@@ -25,6 +26,7 @@ interface teacherCardInfo {
 }
 export default function TeacherBoard() {
   const [teacherData, setTeacherData] = React.useState<teacherCardInfo[]>([])
+  const [isLoading, setIsLoading] = React.useState<boolean>(true)
 
   async function fetchEntrevista(dni: string, newTeacher: teacherCardInfo) {
     let { data: entrevista, error } = await supabase
@@ -78,7 +80,7 @@ export default function TeacherBoard() {
       console.error(error)
     } else if (titulos) {
       newTeacher.titulo = titulos[0].nombre
-      fetchArea(titulos[0].areaestudio, newTeacher)
+      await fetchArea(titulos[0].areaestudio, newTeacher)
       newTeacher.universidad = titulos[0].universidad
     }
   }
@@ -109,7 +111,7 @@ export default function TeacherBoard() {
     if (error) {
       console.error(error)
     } else if (trabajos) {
-      trabajos.forEach((trabajo) => fetchEmpresa(trabajo.empresa, newTeacher))
+      trabajos.forEach(async (trabajo) => await fetchEmpresa(trabajo.empresa, newTeacher))
     }
   }
 
@@ -132,7 +134,7 @@ export default function TeacherBoard() {
     } else if (resumes) {
       newTeacher.fecharecepcion = resumes[0].fecharecepcion
       newTeacher.cvlink = resumes[0].cvlink
-      fetchRecepcion(resumes[0].recepcion, newTeacher)
+      await fetchRecepcion(resumes[0].recepcion, newTeacher)
     }
   }
 
@@ -188,14 +190,36 @@ export default function TeacherBoard() {
     fetchTeacher().then(() => {
       console.log('Teacher data fetched')
       console.log(teacherData)
+      setIsLoading(false) // Indicamos que la carga de datos ha finalizado y el componente puede renderizarse en pantalla.
     })
   }, [])
 
   return (
     <section className="flex flex-wrap justify-center gap-10">
-      {teacherData.map((teacher) => {
-        return <TeacherCard key={teacher.documentoid} teacher={teacher} />
-      })}
+      {isLoading
+        ? // <Skeleton variant="rounded" width={210} height={60} />
+          Array.from(new Array(16)).map((_, index) => (
+            <div key={index} className="max-w-md p-7 border-2 rounded">
+              <div className="flex mb-1">
+                <Skeleton variant="circular" width={50} height={50} animation="wave" />
+                <Skeleton
+                  className="ml-2"
+                  variant="text"
+                  width={200}
+                  height={50}
+                  animation="wave"
+                />
+              </div>
+              <Skeleton variant="rounded" width={260} height={150} animation="wave" />
+              <div className="flex mt-2 justify-between">
+                <Skeleton variant="rounded" width={120} height={40} animation="wave" />
+                <Skeleton variant="rounded" width={120} height={40} animation="wave" />
+              </div>
+            </div>
+          ))
+        : teacherData.map((teacher) => {
+            return <TeacherCard key={teacher.documentoid} teacher={teacher} />
+          })}
     </section>
   )
 }
