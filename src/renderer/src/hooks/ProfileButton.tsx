@@ -15,7 +15,29 @@ const Transition = React.forwardRef(function Transition(
   return <Slide direction="up" ref={ref} {...props} />
 })
 
-export default function ProfileButton() {
+interface teacherCardInfo {
+  documentoid: string | undefined
+  nombre: string | undefined
+  apellido: string | undefined
+  fechanacimiento: string | undefined
+  tiempoexperiencia: number | undefined
+  observaciongeneral: string | undefined
+  recomendado: string | undefined
+  datosimportantes: string | undefined
+  ciudad: string | undefined
+  area: string | undefined
+  empresa: string | undefined
+  fechaEntrevista: string | undefined
+  observacionEntrevista: string | undefined
+  fecharecepcion: string | undefined
+  tiporecepcion: string | undefined
+  telefono: string | undefined
+  titulo: string | undefined
+  universidad: string | undefined
+  cvlink: string | undefined
+}
+
+export default function ProfileButton({ teacher }: { teacher: teacherCardInfo }) {
   const [open, setOpen] = React.useState(false)
 
   const handleClickOpen = () => {
@@ -24,6 +46,13 @@ export default function ProfileButton() {
 
   const handleClose = () => {
     setOpen(false)
+  }
+
+  const calculateAge = (birthdate: string) => {
+    const currentYear = new Date().getFullYear()
+    const birthYear = parseInt(birthdate)
+    const age = currentYear - birthYear
+    return age
   }
 
   return (
@@ -60,50 +89,95 @@ export default function ProfileButton() {
                 <PersonOutlineOutlinedIcon sx={{ fontSize: 35 }} />
               </div>
               <article className="ml-2">
-                <p className="text-xl font-bold">John Doe</p>
-                <p className="text-sm opacity-80">Docente de Matematicas</p>
+                <p className="text-xl font-bold">{teacher.nombre}</p>
+                <p className="text-xl font-bold">{teacher.apellido}</p>
+                <p className="text-sm opacity-80">{teacher.area}</p>
               </article>
             </section>
             <section className="flex flex-col gap-y-2 pt-2">
               <article className="flex justify-between">
+                <p className="opacity-70">N°Document:</p>
+                <p className="font-semibold">{teacher.documentoid}</p>
+              </article>
+              <article className="flex justify-between">
+                <p className="opacity-70">Edad:</p>
+                <p className="font-semibold">
+                  {teacher.fechanacimiento ? calculateAge(teacher.fechanacimiento) : 'N/A'}
+                </p>
+              </article>
+              <article className="flex justify-between">
+                <p className="opacity-70">Telefono:</p>
+                <p className="font-semibold">{teacher.telefono}</p>
+              </article>
+              <article className="flex justify-between">
+                <p className="opacity-70">Ciudad:</p>
+                <p className="font-semibold">{teacher.ciudad}</p>
+              </article>
+              <article className="flex justify-between">
+                <p className="opacity-70">Años de Experiencia:</p>
+                <p className="font-semibold">{teacher.tiempoexperiencia} años</p>
+              </article>
+              <article className="flex justify-between">
                 <p className="opacity-70">Experiencia:</p>
-                <p className="font-semibold">5 años</p>
+                <p className="font-semibold">{teacher.empresa}</p>
               </article>
               <article className="flex justify-between">
                 <p className="opacity-70">Educación:</p>
-                <p className="font-semibold">Ingeniero Electronico</p>
+                <div className="text-right">
+                  <p className="font-semibold">{teacher.titulo}</p>
+                  <p className="text-sm opacity-80">{teacher.universidad}</p>
+                </div>
               </article>
               <article className="flex justify-between">
                 <p className="opacity-70">Area:</p>
-                <p className="font-semibold">Matematica, Fisica</p>
+                <p className="font-semibold">{teacher.area}</p>
               </article>
               <article className="flex justify-between">
-                <p className="opacity-70">Certificaciones:</p>
-                <p className="font-semibold">Docente Universitario</p>
+                <p className="opacity-70">Recepción hoja de vida:</p>
+                <p className="font-semibold">{teacher.fecharecepcion}</p>
+              </article>
+              <article className="flex justify-between">
+                <p className="opacity-70">Tipo de recepción:</p>
+                <p className="font-semibold">{teacher.tiporecepcion}</p>
+              </article>
+              <article className="flex justify-between">
+                <p className="opacity-70">Fecha Entrevista:</p>
+                <p className="font-semibold">{teacher.fechaEntrevista}</p>
+              </article>
+              <article className="flex justify-between">
+                <p className="opacity-70">Recomendado por:</p>
+                <p className="font-semibold">{teacher.recomendado}</p>
               </article>
             </section>
             <section className="mx-auto mt-6">
-              <DownloadCv style="flex border-2 p-2 rounded-md bg-primary-blue text-white" />
+              <DownloadCv
+                style="flex border-2 p-2 rounded-md bg-primary-blue text-white"
+                cvlink={teacher.cvlink}
+              />
             </section>
           </section>
           <section className="flex flex-col gap-y-2">
             {/* Sección de información detallada del docente */}
             <article>
-              <p className="font-bold text-xl pb-1">Sobre</p>
-              <p className="opacity-70 ">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto saepe alias fugit
-                suscipit unde aperiam nostrum, architecto sint officiis cum nam similique
-                repellendus, rem ipsum maiores illum excepturi? Alias, ea.
-              </p>
+              <p className="font-bold text-xl pb-1">Datos importantes</p>
+              <p className="opacity-70 ">{teacher.datosimportantes}</p>
             </article>
             <article>
+              <p className="font-bold text-xl pb-1">Observaciones Generales</p>
+              <p className="opacity-70 ">{teacher.observaciongeneral}</p>
+            </article>
+            <article>
+              <p className="font-bold text-xl pb-1">Observaciones Entrevista</p>
+              <p className="opacity-70 ">{teacher.observacionEntrevista}</p>
+            </article>
+            {/* <article>
               <p className="font-bold text-xl pb-1">Experiencia</p>
               <ul className="opacity-70 list-disc pl-8">
                 <li>Profesor de Matematicas - Instituto XYZ (Enero 2015 - Actualidad)</li>
                 <li>Profesor de Matematicas - Instituto ABC (Agosto 2010 - Diciembre 2014)</li>
               </ul>
-            </article>
-            <article>
+            </article> */}
+            {/* <article>
               <p className="font-bold text-xl pb-1">Educación</p>
               <ul className="opacity-70 list-disc pl-8">
                 <li>
@@ -111,7 +185,7 @@ export default function ProfileButton() {
                   2010
                 </li>
               </ul>
-            </article>
+            </article> */}
           </section>
         </section>
       </Dialog>

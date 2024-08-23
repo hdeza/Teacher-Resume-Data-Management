@@ -70,7 +70,7 @@ export default function TeacherCard({ teacher }: { teacher: teacherCardInfo }) {
         </section>
         <section className="flex gap-x-1">
           <DownloadCv cvlink={teacher.cvlink} />
-          <ProfileButton />
+          <ProfileButton teacher={teacher} />
         </section>
       </div>
     </>
