@@ -27,7 +27,6 @@ interface teacherCardInfo {
 export default function TeacherBoard() {
   const [teacherData, setTeacherData] = React.useState<teacherCardInfo[]>([])
   const [isLoading, setIsLoading] = React.useState<boolean>(true)
-
   async function fetchEntrevista(dni: string, newTeacher: teacherCardInfo) {
     let { data: entrevista, error } = await supabase
       .from('entrevistas')
@@ -186,6 +185,7 @@ export default function TeacherBoard() {
       setTeacherData(teacherInfo)
     }
   }
+
   useEffect(() => {
     fetchTeacher().then(() => {
       console.log('Teacher data fetched')

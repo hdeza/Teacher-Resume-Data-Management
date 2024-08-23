@@ -76,5 +76,3 @@ export default function TeacherCard({ teacher }: { teacher: teacherCardInfo }) {
     </>
   )
 }
-
-// const pdfLink = 'https://drive.google.com/file/d/1QTDdztChYGl9Wy6Nx9y-SrpNR5a68UB2/view?usp=sharing'

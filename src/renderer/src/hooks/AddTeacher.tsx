@@ -531,6 +531,7 @@ export default function AddTeacher() {
       await addJob()
       // Procedemos a cerrar
       handleClose()
+      window.location.reload()
     } catch (error) {
       console.error('Error during submission:', error)
     }
