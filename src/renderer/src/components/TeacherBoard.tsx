@@ -24,7 +24,7 @@ interface teacherCardInfo {
   universidad: string | undefined
   cvlink: string | undefined
 }
-export default function TeacherBoard() {
+export default function TeacherBoard({ teacherName }: { teacherName: string }) {
   const [teacherData, setTeacherData] = React.useState<teacherCardInfo[]>([])
   const [isLoading, setIsLoading] = React.useState<boolean>(true)
   async function fetchEntrevista(dni: string, newTeacher: teacherCardInfo) {
@@ -218,7 +218,16 @@ export default function TeacherBoard() {
             </div>
           ))
         : teacherData.map((teacher) => {
-            return <TeacherCard key={teacher.documentoid} teacher={teacher} />
+            if (teacherName !== '') {
+              if (
+                teacher.nombre?.toLowerCase().includes(teacherName.toLowerCase()) ||
+                teacher.apellido?.toLowerCase().includes(teacherName.toLowerCase())
+              ) {
+                return <TeacherCard key={teacher.documentoid} teacher={teacher} />
+              }
+            } else {
+              return <TeacherCard key={teacher.documentoid} teacher={teacher} />
+            }
           })}
     </section>
   )
