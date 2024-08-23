@@ -9,9 +9,12 @@ import PageTwoAdd from '../components/addTeacher/PageTwoAdd'
 import PageThreeAdd from '../components/addTeacher/PageThreeAdd'
 import supabase from '../database/supabase'
 
+import Backdrop from '@mui/material/Backdrop'
+import CircularProgress from '@mui/material/CircularProgress'
 export default function AddTeacher() {
   const [open, setOpen] = React.useState(false)
   const [page, setPage] = React.useState(1)
+  const [loading, setLoading] = React.useState(false)
 
   // Status variables for teacher data
   const [name, setName] = React.useState('')
@@ -517,6 +520,7 @@ export default function AddTeacher() {
   //Ingreso de datos para los docentes
   const handleSubmit = async () => {
     try {
+      setLoading(true)
       await addAreas()
       await addUniversity()
       await addCity()
@@ -573,6 +577,13 @@ export default function AddTeacher() {
           </Stack>
         </div>
       </Dialog>
+      <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={loading}
+        onClick={handleClose}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </>
   )
 }
