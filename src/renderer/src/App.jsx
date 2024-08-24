@@ -10,6 +10,7 @@ function App() {
   const [teacherDegree, setTeacherDegree] = React.useState('')
   const [teacherCity, setTeacherCity] = React.useState('')
   const [teacherRecommended, setTeacherRecommended] = React.useState('')
+  const [downloadPdf, setDownloadPdf] = React.useState(false)
   return (
     <>
       <Header />
@@ -22,6 +23,7 @@ function App() {
         setTeacherCity={setTeacherCity}
         setTeacherDegree={setTeacherDegree}
         setTeacherRecommended={setTeacherRecommended}
+        setDownloadPdf={setDownloadPdf}
       />
       <TeacherBoard
         teacherName={teacherName}
@@ -31,6 +33,8 @@ function App() {
         teacherCity={teacherCity}
         teacherDegree={teacherDegree}
         teacherRecommended={teacherRecommended}
+        downloadPdf={downloadPdf}
+        setDownloadPdf={setDownloadPdf}
       />
     </>
   )

@@ -31,7 +31,9 @@ export default function TeacherBoard({
   teacherArea,
   teacherDegree,
   teacherCity,
-  teacherRecommended
+  teacherRecommended,
+  downloadPdf,
+  setDownloadPdf
 }: {
   teacherName: string
   teacherReception: string
@@ -40,10 +42,12 @@ export default function TeacherBoard({
   teacherDegree: string
   teacherCity: string
   teacherRecommended: string
+  downloadPdf: boolean
+  setDownloadPdf: React.Dispatch<React.SetStateAction<boolean>>
 }) {
   const [teacherData, setTeacherData] = React.useState<teacherCardInfo[]>([])
   const [isLoading, setIsLoading] = React.useState<boolean>(true)
-  let teacherFiltered: teacherCardInfo[] = [] // aqui se guardará los docentes de los resultados del filtrado
+  let teacherPdf: teacherCardInfo[] = [] // aqui se guardará los docentes de los resultados del filtrado
 
   async function fetchEntrevista(dni: string, newTeacher: teacherCardInfo) {
     let { data: entrevista, error } = await supabase
@@ -212,41 +216,164 @@ export default function TeacherBoard({
     })
   }, [])
 
-  const generatePDF = (teacherData: teacherCardInfo[]) => {
-    const doc = new jsPDF()
-
-    teacherData.forEach((teacher, index) => {
-      if (index > 0) {
-        doc.addPage()
-      }
-
-      doc.setFontSize(16)
-      doc.text(`Nombre: ${teacher.nombre} ${teacher.apellido}`, 10, 10)
-      doc.text(`Documento ID: ${teacher.documentoid}`, 10, 20)
-      doc.text(`Fecha de Nacimiento: ${teacher.fechanacimiento}`, 10, 30)
-      doc.text(`Tiempo de Experiencia: ${teacher.tiempoexperiencia}`, 10, 40)
-      doc.text(`Observación General: ${teacher.observaciongeneral}`, 10, 50)
-      doc.text(`Recomendado: ${teacher.recomendado}`, 10, 60)
-      doc.text(`Datos Importantes: ${teacher.datosimportantes}`, 10, 70)
-      doc.text(`Ciudad: ${teacher.ciudad}`, 10, 80)
-      doc.text(`Área: ${teacher.area}`, 10, 90)
-      doc.text(`Empresa: ${teacher.empresa}`, 10, 100)
-      doc.text(`Fecha de Entrevista: ${teacher.fechaEntrevista}`, 10, 110)
-      doc.text(`Observación de Entrevista: ${teacher.observacionEntrevista}`, 10, 120)
-      doc.text(`Fecha de Recepción: ${teacher.fecharecepcion}`, 10, 130)
-      doc.text(`Tipo de Recepción: ${teacher.tiporecepcion}`, 10, 140)
-      doc.text(`Teléfono: ${teacher.telefono}`, 10, 150)
-      doc.text(`Título: ${teacher.titulo}`, 10, 160)
-      doc.text(`Universidad: ${teacher.universidad}`, 10, 170)
-      doc.text(`CV Link: ${teacher.cvlink}`, 10, 180)
-
-      if (index === teacherData.length - 1) {
-        doc.text('Fin de la lista de docentes', 10, 190)
-      }
-    })
-
-    doc.save('teacherData.pdf')
+  function capitalizeWords(text) {
+    return text.replace(
+      /\b\w+/g,
+      (word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+    )
   }
+
+  function formatTeacherData(teacher) {
+    return {
+      ...teacher,
+      nombre: capitalizeWords(teacher.nombre || ''),
+      apellido: capitalizeWords(teacher.apellido || ''),
+      ciudad: capitalizeWords(teacher.ciudad || ''),
+      area: capitalizeWords(teacher.area || ''),
+      empresa: capitalizeWords(teacher.empresa || ''),
+      tiporecepcion: capitalizeWords(teacher.tiporecepcion || ''),
+      telefono: capitalizeWords(teacher.telefono || ''),
+      titulo: capitalizeWords(teacher.titulo || ''),
+      universidad: capitalizeWords(teacher.universidad || ''),
+      // Deja las observaciones tal como están
+      observaciongeneral: teacher.observaciongeneral,
+      datosimportantes: teacher.datosimportantes,
+      observacionEntrevista: teacher.observacionEntrevista
+    }
+  }
+
+  useEffect(() => {
+    if (downloadPdf) {
+      const generatePDF = (teacherData: teacherCardInfo[]) => {
+        const doc = new jsPDF()
+        const margin = 15
+        const lineHeight = 8
+        const pageWidth = doc.internal.pageSize.width
+        const contentWidth = pageWidth - margin * 2
+        let yOffset = margin
+
+        teacherData.forEach((teacher, index) => {
+          if (index > 0) {
+            doc.addPage()
+            yOffset = margin
+          }
+
+          // Nombre
+          doc.setFontSize(20)
+          doc.setFont('helvetica', 'bold')
+          doc.text(`${teacher.nombre} ${teacher.apellido}`, margin, yOffset)
+          yOffset += lineHeight - 3
+
+          doc.setLineWidth(0.5)
+          doc.line(margin, yOffset, pageWidth - margin, yOffset) // Línea separadora
+          yOffset += lineHeight
+
+          // Información Personal
+          doc.setFontSize(14)
+          doc.setFont('helvetica', 'bold')
+          doc.text('Información Personal:', margin, yOffset)
+          yOffset += lineHeight
+
+          doc.setFont('helvetica', 'normal')
+          doc.text(`Documento de ID: ${teacher.documentoid || 'N/A'}`, margin, yOffset)
+          yOffset += lineHeight
+
+          doc.text(`Fecha de Nacimiento: ${teacher.fechanacimiento || 'N/A'}`, margin, yOffset)
+          yOffset += lineHeight
+
+          doc.text(`Ciudad: ${teacher.ciudad || 'N/A'}`, margin, yOffset)
+          yOffset += lineHeight
+
+          doc.text(`Teléfono: ${teacher.telefono || 'N/A'}`, margin, yOffset)
+          yOffset += lineHeight
+
+          yOffset += 5 // Espacio extra entre secciones
+
+          // Experiencia y Observaciones
+          doc.setFont('helvetica', 'bold')
+          doc.text('Experiencia y Observaciones:', margin, yOffset)
+          yOffset += lineHeight
+
+          doc.setFont('helvetica', 'normal')
+          doc.text(`Tiempo de Experiencia: ${teacher.tiempoexperiencia || 0} años`, margin, yOffset)
+          yOffset += lineHeight
+
+          doc.text(`Observación General:`, margin, yOffset)
+          yOffset += lineHeight
+
+          const observationLines = doc.splitTextToSize(
+            teacher.observaciongeneral || 'N/A',
+            contentWidth
+          )
+          doc.text(observationLines, margin, yOffset)
+          yOffset += observationLines.length * lineHeight
+
+          doc.text(`Datos Importantes:`, margin, yOffset)
+          yOffset += lineHeight
+
+          const importantDataLines = doc.splitTextToSize(
+            teacher.datosimportantes || 'N/A',
+            contentWidth
+          )
+          doc.text(importantDataLines, margin, yOffset)
+          yOffset += importantDataLines.length * lineHeight
+
+          doc.setFont('helvetica', 'normal')
+          doc.text(`Recomendado por: ${teacher.recomendado || 'N/A'}`, margin, yOffset)
+          yOffset += lineHeight
+
+          yOffset += 5 // Espacio extra entre secciones
+
+          // Información Académica
+          doc.setFont('helvetica', 'bold')
+          doc.text('Información Académica:', margin, yOffset)
+          yOffset += lineHeight
+
+          doc.setFont('helvetica', 'normal')
+          doc.text(`Título: ${teacher.titulo || 'N/A'}`, margin, yOffset)
+          yOffset += lineHeight
+
+          doc.text(`Area: ${teacher.area || 'N/A'}`, margin, yOffset)
+          yOffset += lineHeight
+
+          doc.text(`Universidad: ${teacher.universidad || 'N/A'}`, margin, yOffset)
+          yOffset += lineHeight
+
+          yOffset += 5 // Espacio extra entre secciones
+
+          // Información de la Entrevista
+          doc.setFont('helvetica', 'bold')
+          doc.text('Información de la Entrevista:', margin, yOffset)
+          yOffset += lineHeight
+
+          doc.setFont('helvetica', 'normal')
+          doc.text(`Fecha de Entrevista: ${teacher.fechaEntrevista || 'N/A'}`, margin, yOffset)
+          yOffset += lineHeight
+
+          const interviewObservationLines = doc.splitTextToSize(
+            teacher.observacionEntrevista || 'N/A',
+            contentWidth
+          )
+          doc.text(`Observación Entrevista:`, margin, yOffset)
+          yOffset += lineHeight
+          doc.text(interviewObservationLines, margin, yOffset)
+          yOffset += interviewObservationLines.length * lineHeight
+
+          doc.text(`Tipo de Recepción: ${teacher.tiporecepcion || 'N/A'}`, margin, yOffset)
+          yOffset += lineHeight
+
+          doc.text(`Fecha de Recepción: ${teacher.fecharecepcion || 'N/A'}`, margin, yOffset)
+          yOffset += lineHeight
+        })
+
+        doc.save('Informacion_Docentes.pdf')
+        setDownloadPdf(false)
+      }
+      const formattedTeacherData = teacherPdf.map((teacher) => formatTeacherData(teacher))
+
+      generatePDF(formattedTeacherData)
+    }
+  }, [downloadPdf])
 
   return (
     <section className="flex flex-wrap justify-center gap-10">
@@ -302,10 +429,11 @@ export default function TeacherBoard({
               })
               // Si el docente cumple con todos los criterios, lo renderiza.
               if (matchesAllCriteria) {
-                teacherFiltered.push(teacher)
+                teacherPdf.push(teacher)
                 return <TeacherCard key={teacher.documentoid} teacher={teacher} />
               }
             } else {
+              teacherPdf.push(teacher)
               return <TeacherCard key={teacher.documentoid} teacher={teacher} />
             }
           })}

@@ -10,7 +10,8 @@ export default function MenuDocentes({
   setTeacherArea,
   setTeacherDegree,
   setTeacherCity,
-  setTeacherRecommended
+  setTeacherRecommended,
+  setDownloadPdf
 }: {
   teacherName: string
   setTeacherName: React.Dispatch<React.SetStateAction<string>>
@@ -20,6 +21,7 @@ export default function MenuDocentes({
   setTeacherDegree: React.Dispatch<React.SetStateAction<string>>
   setTeacherCity: React.Dispatch<React.SetStateAction<string>>
   setTeacherRecommended: React.Dispatch<React.SetStateAction<string>>
+  setDownloadPdf: React.Dispatch<React.SetStateAction<boolean>>
 }) {
   return (
     <>
@@ -44,7 +46,10 @@ export default function MenuDocentes({
             setTeacherRecomendacion={setTeacherRecommended}
             setTeacherTitulo={setTeacherDegree}
           />
-          <button className="flex border-2 p-2 rounded-md bg-primary-blue text-white ml-5">
+          <button
+            onClick={() => setDownloadPdf(true)}
+            className="flex border-2 p-2 rounded-md bg-primary-blue text-white ml-5"
+          >
             <PictureAsPdfOutlinedIcon />
             <p className="pl-1 font-medium">PDF</p>
           </button>
