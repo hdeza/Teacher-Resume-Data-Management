@@ -5,10 +5,16 @@ import FiltrarButton from '../hooks/FiltrarButton'
 // pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500
 export default function MenuDocentes({
   teacherName,
-  setTeacherName
+  setTeacherName,
+  setTeacherReception,
+  setTeacherUniversity,
+  setTeacherArea
 }: {
   teacherName: string
   setTeacherName: React.Dispatch<React.SetStateAction<string>>
+  setTeacherReception: React.Dispatch<React.SetStateAction<string>>
+  setTeacherUniversity: React.Dispatch<React.SetStateAction<string>>
+  setTeacherArea: React.Dispatch<React.SetStateAction<string>>
 }) {
   return (
     <>
@@ -25,7 +31,11 @@ export default function MenuDocentes({
               className="pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 mr-5"
             />
           </label>
-          <FiltrarButton />
+          <FiltrarButton
+            setTeacherArea={setTeacherArea}
+            setTeacherReception={setTeacherReception}
+            setTeacherUniversity={setTeacherUniversity}
+          />
         </div>
       </section>
     </>

@@ -24,9 +24,20 @@ interface teacherCardInfo {
   universidad: string | undefined
   cvlink: string | undefined
 }
-export default function TeacherBoard({ teacherName }: { teacherName: string }) {
+export default function TeacherBoard({
+  teacherName,
+  teacherReception,
+  teacherUniversity,
+  teacherArea
+}: {
+  teacherName: string
+  teacherReception: string
+  teacherUniversity: string
+  teacherArea: string
+}) {
   const [teacherData, setTeacherData] = React.useState<teacherCardInfo[]>([])
   const [isLoading, setIsLoading] = React.useState<boolean>(true)
+
   async function fetchEntrevista(dni: string, newTeacher: teacherCardInfo) {
     let { data: entrevista, error } = await supabase
       .from('entrevistas')
@@ -197,8 +208,7 @@ export default function TeacherBoard({ teacherName }: { teacherName: string }) {
   return (
     <section className="flex flex-wrap justify-center gap-10">
       {isLoading
-        ? // <Skeleton variant="rounded" width={210} height={60} />
-          Array.from(new Array(16)).map((_, index) => (
+        ? Array.from(new Array(16)).map((_, index) => (
             <div key={index} className="max-w-md p-7 border-2 rounded">
               <div className="flex mb-1">
                 <Skeleton variant="circular" width={50} height={50} animation="wave" />
@@ -224,6 +234,13 @@ export default function TeacherBoard({ teacherName }: { teacherName: string }) {
                 teacher.apellido?.toLowerCase().includes(teacherName.toLowerCase())
               ) {
                 return <TeacherCard key={teacher.documentoid} teacher={teacher} />
+              }
+            } else if (teacherArea !== '' || teacherReception != '' || teacherUniversity !== '') {
+              if (
+                teacher.area?.toLowerCase().includes(teacherArea.toLowerCase()) ||
+                teacher.fecharecepcion?.toLowerCase().includes(teacherReception.toLowerCase()) ||
+                teacher.universidad?.toLowerCase().includes(teacherUniversity.toLowerCase())
+              ) {
               }
             } else {
               return <TeacherCard key={teacher.documentoid} teacher={teacher} />
