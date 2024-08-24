@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import TeacherCard from '../hooks/TeacherCard'
 import supabase from '../database/supabase'
 import Skeleton from '@mui/material/Skeleton'
-
+import { jsPDF } from 'jspdf'
 interface teacherCardInfo {
   documentoid: string | undefined
   nombre: string | undefined
@@ -28,15 +28,22 @@ export default function TeacherBoard({
   teacherName,
   teacherReception,
   teacherUniversity,
-  teacherArea
+  teacherArea,
+  teacherDegree,
+  teacherCity,
+  teacherRecommended
 }: {
   teacherName: string
   teacherReception: string
   teacherUniversity: string
   teacherArea: string
+  teacherDegree: string
+  teacherCity: string
+  teacherRecommended: string
 }) {
   const [teacherData, setTeacherData] = React.useState<teacherCardInfo[]>([])
   const [isLoading, setIsLoading] = React.useState<boolean>(true)
+  let teacherFiltered: teacherCardInfo[] = [] // aqui se guardará los docentes de los resultados del filtrado
 
   async function fetchEntrevista(dni: string, newTeacher: teacherCardInfo) {
     let { data: entrevista, error } = await supabase
@@ -205,6 +212,42 @@ export default function TeacherBoard({
     })
   }, [])
 
+  const generatePDF = (teacherData: teacherCardInfo[]) => {
+    const doc = new jsPDF()
+
+    teacherData.forEach((teacher, index) => {
+      if (index > 0) {
+        doc.addPage()
+      }
+
+      doc.setFontSize(16)
+      doc.text(`Nombre: ${teacher.nombre} ${teacher.apellido}`, 10, 10)
+      doc.text(`Documento ID: ${teacher.documentoid}`, 10, 20)
+      doc.text(`Fecha de Nacimiento: ${teacher.fechanacimiento}`, 10, 30)
+      doc.text(`Tiempo de Experiencia: ${teacher.tiempoexperiencia}`, 10, 40)
+      doc.text(`Observación General: ${teacher.observaciongeneral}`, 10, 50)
+      doc.text(`Recomendado: ${teacher.recomendado}`, 10, 60)
+      doc.text(`Datos Importantes: ${teacher.datosimportantes}`, 10, 70)
+      doc.text(`Ciudad: ${teacher.ciudad}`, 10, 80)
+      doc.text(`Área: ${teacher.area}`, 10, 90)
+      doc.text(`Empresa: ${teacher.empresa}`, 10, 100)
+      doc.text(`Fecha de Entrevista: ${teacher.fechaEntrevista}`, 10, 110)
+      doc.text(`Observación de Entrevista: ${teacher.observacionEntrevista}`, 10, 120)
+      doc.text(`Fecha de Recepción: ${teacher.fecharecepcion}`, 10, 130)
+      doc.text(`Tipo de Recepción: ${teacher.tiporecepcion}`, 10, 140)
+      doc.text(`Teléfono: ${teacher.telefono}`, 10, 150)
+      doc.text(`Título: ${teacher.titulo}`, 10, 160)
+      doc.text(`Universidad: ${teacher.universidad}`, 10, 170)
+      doc.text(`CV Link: ${teacher.cvlink}`, 10, 180)
+
+      if (index === teacherData.length - 1) {
+        doc.text('Fin de la lista de docentes', 10, 190)
+      }
+    })
+
+    doc.save('teacherData.pdf')
+  }
+
   return (
     <section className="flex flex-wrap justify-center gap-10">
       {isLoading
@@ -235,12 +278,32 @@ export default function TeacherBoard({
               ) {
                 return <TeacherCard key={teacher.documentoid} teacher={teacher} />
               }
-            } else if (teacherArea !== '' || teacherReception != '' || teacherUniversity !== '') {
-              if (
-                teacher.area?.toLowerCase().includes(teacherArea.toLowerCase()) ||
-                teacher.fecharecepcion?.toLowerCase().includes(teacherReception.toLowerCase()) ||
-                teacher.universidad?.toLowerCase().includes(teacherUniversity.toLowerCase())
-              ) {
+            } else if (
+              teacherArea ||
+              teacherReception ||
+              teacherUniversity ||
+              teacherDegree ||
+              teacherCity ||
+              teacherRecommended
+            ) {
+              // Filtrar los docentes basados en los criterios seleccionados
+              const criteria = [
+                // aqui guardo las variables a comprobar y las variables que tiene el docente que se está leyendo
+                { value: teacherArea, field: teacher.area?.toLowerCase() },
+                { value: teacherReception, field: teacher.fecharecepcion?.toLowerCase() },
+                { value: teacherUniversity, field: teacher.universidad?.toLowerCase() },
+                { value: teacherDegree, field: teacher.titulo?.toLowerCase() },
+                { value: teacherCity, field: teacher.ciudad?.toLowerCase() },
+                { value: teacherRecommended, field: teacher.recomendado?.toLowerCase() }
+              ]
+              // Comprobar si el docente cumple con todos los criterios de búsqueda.
+              const matchesAllCriteria = criteria.every((criterion) => {
+                return !criterion.value || criterion.field?.includes(criterion.value.toLowerCase())
+              })
+              // Si el docente cumple con todos los criterios, lo renderiza.
+              if (matchesAllCriteria) {
+                teacherFiltered.push(teacher)
+                return <TeacherCard key={teacher.documentoid} teacher={teacher} />
               }
             } else {
               return <TeacherCard key={teacher.documentoid} teacher={teacher} />

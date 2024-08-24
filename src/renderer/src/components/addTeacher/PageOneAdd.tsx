@@ -79,10 +79,10 @@ export default function PageOneAdd({
           />
         </article>
         <article className="flex flex-col pt-4 font-medium">
-          <label className="text-lg">Ciudad</label>
+          <label className="text-lg">Ciudad de Residencia</label>
           <input
             type="text"
-            placeholder="Escriba la ciudad"
+            placeholder="Escriba la ciudad donde vive"
             className="border p-2 bg-gray-100 font-light rounded-md"
             value={city}
             onChange={(e) => setCity(e.target.value)}
