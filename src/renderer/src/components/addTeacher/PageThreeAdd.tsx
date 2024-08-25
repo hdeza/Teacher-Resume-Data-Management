@@ -11,7 +11,8 @@ export default function PageThreeAdd({
   setInterviewObservations,
   cvLink,
   setCVLink,
-  handleSubmit
+  handleSubmit,
+  editAdd
 }: {
   recommendedBy: string
   setRecommendedBy: React.Dispatch<React.SetStateAction<string>>
@@ -23,6 +24,7 @@ export default function PageThreeAdd({
   setInterviewObservations: React.Dispatch<React.SetStateAction<string>>
   cvLink: string
   setCVLink: React.Dispatch<React.SetStateAction<string>>
+  editAdd: string
   handleSubmit: () => void
 }) {
   return (
@@ -81,7 +83,7 @@ export default function PageThreeAdd({
             onClick={handleSubmit}
           >
             <AddCircleOutlineRoundedIcon />
-            <p className="pl-1 font-medium">Añadir</p>
+            <p className="pl-1 font-medium">{editAdd}</p>
           </button>
         </article>
       </section>

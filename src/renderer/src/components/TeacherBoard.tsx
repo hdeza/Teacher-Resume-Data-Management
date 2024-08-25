@@ -21,6 +21,7 @@ interface teacherCardInfo {
   tiporecepcion: string | undefined
   telefono: string | undefined
   titulo: string | undefined
+  fechagraduacion: string | undefined
   universidad: string | undefined
   cvlink: string | undefined
 }
@@ -112,6 +113,7 @@ export default function TeacherBoard({
       console.error(error)
     } else if (estudios) {
       estudios.forEach((estudio) => fetchTitulo(estudio.titulo, newTeacher))
+      newTeacher.fechagraduacion = estudios[0].fecha
     }
   }
 
@@ -188,6 +190,7 @@ export default function TeacherBoard({
           tiporecepcion: undefined,
           telefono: undefined,
           titulo: undefined,
+          fechagraduacion: undefined,
           universidad: undefined,
           cvlink: undefined
         }

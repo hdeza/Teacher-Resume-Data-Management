@@ -1,6 +1,5 @@
 import * as React from 'react'
 import Dialog from '@mui/material/Dialog'
-import AddIcon from '@mui/icons-material/Add'
 import CloseIcon from '@mui/icons-material/Close'
 import Pagination from '@mui/material/Pagination'
 import Stack from '@mui/material/Stack'
@@ -11,7 +10,33 @@ import supabase from '../database/supabase'
 
 import Backdrop from '@mui/material/Backdrop'
 import CircularProgress from '@mui/material/CircularProgress'
-export default function AddTeacher() {
+
+import ModeEditOutlinedIcon from '@mui/icons-material/ModeEditOutlined'
+
+interface teacherCardInfo {
+  documentoid: string | undefined
+  nombre: string | undefined
+  apellido: string | undefined
+  fechanacimiento: string | undefined
+  tiempoexperiencia: number | undefined
+  observaciongeneral: string | undefined
+  recomendado: string | undefined
+  datosimportantes: string | undefined
+  ciudad: string | undefined
+  area: string | undefined
+  empresa: string | undefined
+  fechaEntrevista: string | undefined
+  observacionEntrevista: string | undefined
+  fecharecepcion: string | undefined
+  tiporecepcion: string | undefined
+  telefono: string | undefined
+  titulo: string | undefined
+  fechagraduacion: string | undefined
+  universidad: string | undefined
+  cvlink: string | undefined
+}
+
+export default function EditTeacher({ teacher }: { teacher: teacherCardInfo }) {
   const [open, setOpen] = React.useState(false)
   const [page, setPage] = React.useState(1)
   const [loading, setLoading] = React.useState(false)
@@ -37,6 +62,29 @@ export default function AddTeacher() {
   const [interviewObservations, setInterviewObservations] = React.useState('')
   const [cvLink, setCVLink] = React.useState('')
   const [city, setCity] = React.useState('')
+
+  React.useEffect(() => {
+    setName(teacher?.nombre ?? '')
+    setSurName(teacher?.apellido ?? '')
+    setDni(teacher?.documentoid ?? '')
+    setPhone(teacher?.telefono ?? '')
+    setDegree(teacher?.titulo ?? '')
+    setUniversity(teacher?.universidad ?? '')
+    setYear(teacher?.fechanacimiento ?? '')
+    setEnterprises(teacher?.empresa ?? '')
+    setExperience(teacher?.tiempoexperiencia?.toString() ?? '')
+    setArea(teacher?.area ?? '')
+    setReceiptDate(teacher?.fecharecepcion ?? '')
+    setTypeReceipt(teacher?.tiporecepcion ?? '')
+    setRecommendedBy(teacher?.recomendado ?? '')
+    setImportantFacts(teacher?.datosimportantes ?? '')
+    setGeneralRemarks(teacher?.observaciongeneral ?? '')
+    setInterviewDate(teacher?.fechaEntrevista ?? '')
+    setInterviewObservations(teacher?.observacionEntrevista ?? '')
+    setCVLink(teacher?.cvlink ?? '')
+    setCity(teacher?.ciudad ?? '')
+    setGraduationDate(teacher?.fechagraduacion ?? '')
+  }, [teacher])
 
   const handleClickOpen = () => {
     setOpen(true)
@@ -128,7 +176,7 @@ export default function AddTeacher() {
             recommendedBy={recommendedBy}
             setRecommendedBy={setRecommendedBy}
             handleSubmit={handleSubmit}
-            editAdd="Añadir"
+            editAdd="Editar"
           />
         )
     }
@@ -143,21 +191,12 @@ export default function AddTeacher() {
   let idTypeReceipt
   let idEnterprise
 
-  function capitalizeWords(text) {
-    return text.replace(
-      /\b\w+/g,
-      (word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
-    )
-  }
-
-  // TODO: Validar los datos antes de enviarlo
-
-  const addAreas = async () => {
+  const editAreas = async () => {
     const checkArea = async (area: string) => {
       let { data: dataArea, error } = await supabase
         .from('areas')
         .select('idarea')
-        .eq('nombre', capitalizeWords(area)) // traemos de la base de datos el id donde el nombre es igual al area
+        .eq('nombre', area) // traemos de la base de datos el id donde el nombre es igual al area
       if (error) {
         if (error.code === 'PGRST116') {
           // El error PGRST116 indica que no se encontró ningún registro
@@ -183,7 +222,7 @@ export default function AddTeacher() {
       // Si no exite el area ingresada en la base de datos entonces la agregamos
       const { data, error } = await supabase
         .from('areas')
-        .insert([{ nombre: capitalizeWords(area) }])
+        .insert([{ nombre: area }])
         .select() // insertamos el dato correpondiente en la tabla
       if (error) {
         console.error('Error fetching areas:', error)
@@ -194,12 +233,12 @@ export default function AddTeacher() {
     }
   }
 
-  const addUniversity = async () => {
+  const editUniversity = async () => {
     const checkUniversity = async (university: string) => {
       const { data, error } = await supabase
         .from('universidades')
         .select('nombre')
-        .eq('nombre', capitalizeWords(university))
+        .eq('nombre', university)
       if (error) {
         if (error.code === 'PGRST116') {
           // El error PGRST116 indica que no se encontró ningún registro
@@ -221,7 +260,7 @@ export default function AddTeacher() {
     if (!universityExists) {
       const { data, error } = await supabase
         .from('universidades')
-        .insert([{ nombre: capitalizeWords(university) }])
+        .insert([{ nombre: university }])
         .select()
       if (error) {
         console.error('Error fetching university:', error)
@@ -231,8 +270,7 @@ export default function AddTeacher() {
     }
   }
 
-  // Ingreso de Ciudades
-  const addCity = async () => {
+  const editCity = async () => {
     const checkCity = async (city: string) => {
       const { data, error } = await supabase.from('ciudades').select('idciudad').eq('nombre', city)
       if (error) {
@@ -267,66 +305,37 @@ export default function AddTeacher() {
       }
     }
   }
-  // Ingreso de Docente
-  const addTeacher = async () => {
-    const checkTeacher = async (dni: string) => {
-      const { data, error } = await supabase
-        .from('docentes')
-        .select('documentoid')
-        .eq('documentoid', dni)
-      if (error) {
-        if (error.code === 'PGRST116') {
-          // El error PGRST116 indica que no se encontró ningún registro
-          return false
-        }
-        console.error('Error fetching teacher check:', error)
-        return false
-      } else {
-        if (data && Array.isArray(data) && data.length > 0) {
-          return true
-        } else {
-          return false
-        }
-      }
-    }
 
-    const teacherExists = await checkTeacher(dni)
-
-    if (!teacherExists) {
-      const { data, error } = await supabase
-        .from('docentes')
-        .insert([
-          {
-            documentoid: dni,
-            nombre: capitalizeWords(name),
-            apellido: capitalizeWords(surName),
-            fechanacimiento: year,
-            tiempoexperiencia: experience,
-            observaciongeneral: generalRemarks,
-            recomendado: capitalizeWords(recommendedBy),
-            datosimportantes: importantFacts,
-            ciudad: idCity // aqui se ingresa el id de la ciudad
-          }
-        ])
-        .select()
-      if (error) {
-        console.error('Error adding teacher:', error)
-      } else {
-        console.log('Teacher added successfully')
-      }
+  const editTeacher = async () => {
+    const { data, error } = await supabase
+      .from('docentes')
+      .update({
+        documentoid: dni,
+        nombre: name,
+        apellido: surName,
+        fechanacimiento: year,
+        tiempoexperiencia: experience,
+        observaciongeneral: generalRemarks,
+        recomendado: recommendedBy,
+        datosimportantes: importantFacts,
+        ciudad: idCity // aqui se ingresa el id de la ciudad
+      })
+      .eq('documentoid', dni)
+      .select()
+    if (error) {
+      console.error('Error adding teacher:', error)
     } else {
-      //TODO: error docente ya existe
-      console.log('El docente ya existe en la base de datos.')
+      console.log('Teacher edit successfully')
     }
   }
 
-  const addDregree = async () => {
+  const editDregree = async () => {
     const checkDregree = async (degree: string, university: string) => {
       const { data, error } = await supabase
         .from('titulos')
         .select('idtitulo')
-        .eq('nombre', capitalizeWords(degree))
-        .eq('universidad', capitalizeWords(university))
+        .eq('nombre', degree)
+        .eq('universidad', university)
       if (error) {
         if (error.code === 'PGRST116') {
           // El error PGRST116 indica que no se encontró ningún registro
@@ -347,13 +356,7 @@ export default function AddTeacher() {
     if (!degreeExists) {
       const { data, error } = await supabase
         .from('titulos')
-        .insert([
-          {
-            nombre: capitalizeWords(degree),
-            areaestudio: idArea,
-            universidad: capitalizeWords(university)
-          }
-        ])
+        .insert([{ nombre: degree, areaestudio: idArea, universidad: university }])
         .select()
       if (error) {
         console.error('Error fetching degree:', error)
@@ -364,125 +367,82 @@ export default function AddTeacher() {
     }
   }
 
-  const addStudies = async () => {
+  const editStudies = async () => {
     const { data, error } = await supabase
       .from('estudios')
-      .insert([{ docente: dni, titulo: idDegree, fecha: graduationDate }])
+      .update({ docente: dni, titulo: idDegree, fecha: graduationDate })
+      .eq('docente', dni)
       .select()
     if (error) {
       console.error('Error fetching studies:', error)
     } else {
-      console.log('Studies added successfully')
+      console.log('Studies edit successfully')
     }
   }
 
-  const addPhone = async () => {
-    const checkPhone = async (phone: string) => {
-      const { data, error } = await supabase
-        .from('telefonos')
-        .select('numerotel')
-        .eq('numerotel', phone)
-      if (error) {
-        if (error.code === 'PGRST116') {
-          // El error PGRST116 indica que no se encontró ningún registro
-          return false
-        }
-        console.error('Error fetching phone check:', error)
-        return false
-      } else {
-        if (data && Array.isArray(data) && data.length > 0) {
-          return true
-        } else {
-          return false
-        }
-      }
-    }
-
-    const phoneExists = await checkPhone(phone)
-    if (!phoneExists) {
-      const { data, error } = await supabase
-        .from('telefonos')
-        .insert([{ numerotel: phone, docente: dni }])
-        .select()
-      if (error) {
-        console.error('Error fetching phone:', error)
-      } else {
-        console.log('Phone added successfully')
-      }
+  const editPhone = async () => {
+    const { data, error } = await supabase
+      .from('telefonos')
+      .update({ numerotel: phone, docente: dni })
+      .eq('docente', dni)
+      .select()
+    if (error) {
+      console.error('Error fetching phone:', error)
+    } else {
+      console.log('Phone edit successfully')
     }
   }
 
-  const addTypeReceipt = async () => {
-    const checkTypeReceipt = async (type: string) => {
-      const { data, error } = await supabase
-        .from('tiposrecepcion')
-        .select('idtiporecepcion')
-        .eq('nombre', type)
-      if (error) {
-        if (error.code === 'PGRST116') {
-          // El error PGRST116 indica que no se encontró ningún registro
-          return false
-        }
-        console.error('Error fetching type receipt check:', error)
-        return false
-      } else {
-        if (data && Array.isArray(data) && data.length > 0) {
-          idTypeReceipt = data[0].idtiporecepcion
-          return true
-        } else {
-          return false
-        }
-      }
-    }
-    const typeReceiptExists = await checkTypeReceipt(typeReceipt)
-    if (!typeReceiptExists) {
-      const { data, error } = await supabase
-        .from('tiposrecepcion')
-        .insert([{ nombre: typeReceipt }])
-        .select()
-      if (error) {
-        console.error('Error fetching type receipt:', error)
-      } else {
-        console.log('Type receipt added successfully')
-        idTypeReceipt = data[0].idtiporecepcion // guardamos el id del tipo de recepcion agregado
-      }
+  const editTypeReceipt = async () => {
+    const { data, error } = await supabase
+      .from('tiposrecepcion')
+      .select('idtiporecepcion')
+      .eq('nombre', typeReceipt)
+    if (error) {
+      console.error('Error fetching type receipt:', error)
+    } else {
+      console.log('Type receipt got successfully')
+      idTypeReceipt = data[0].idtiporecepcion // guardamos el id del tipo de recepcion editado
     }
   }
 
-  const addCv = async () => {
+  const editCv = async () => {
     const { data, error } = await supabase
       .from('resumes')
-      .insert([
-        { docente: dni, fecharecepcion: receiptDate, recepcion: idTypeReceipt, cvlink: cvLink }
-      ])
+      .update({
+        docente: dni,
+        fecharecepcion: receiptDate,
+        recepcion: idTypeReceipt,
+        cvlink: cvLink
+      })
+      .eq('docente', dni)
       .select()
     if (error) {
       console.error('Error fetching cv:', error)
     } else {
-      console.log('CV added successfully')
+      console.log('CV edit successfully')
     }
   }
 
-  const addInterview = async () => {
+  const editInterview = async () => {
     const { data, error } = await supabase
       .from('entrevistas')
-      .insert([
-        { fecha: interviewDate, observacionentrevista: interviewObservations, docente: dni }
-      ])
+      .update({ fecha: interviewDate, observacionentrevista: interviewObservations, docente: dni })
+      .eq('docente', dni)
       .select()
     if (error) {
       console.error('Error fetching interview:', error)
     } else {
-      console.log('Interview added successfully')
+      console.log('Interview edit successfully')
     }
   }
 
-  const addEnterprise = async () => {
+  const editEnterprise = async () => {
     const checkEnterprise = async (enterprise: string) => {
       const { data, error } = await supabase
         .from('empresas')
         .select('idempresa')
-        .eq('nombre', capitalizeWords(enterprise))
+        .eq('nombre', enterprise)
       if (error) {
         if (error.code === 'PGRST116') {
           // El error PGRST116 indica que no se encontró ningún registro
@@ -503,7 +463,7 @@ export default function AddTeacher() {
     if (!enterpriseExists) {
       const { data, error } = await supabase
         .from('empresas')
-        .insert([{ nombre: capitalizeWords(enterprises) }])
+        .insert([{ nombre: enterprises }])
         .select()
       if (error) {
         console.error('Error fetching enterprises:', error)
@@ -514,15 +474,14 @@ export default function AddTeacher() {
     }
   }
 
-  const addJob = async () => {
+  const editJob = async () => {
     const { data, error } = await supabase
       .from('trabajos')
-      .insert([
-        {
-          docente: dni,
-          empresa: idEnterprise
-        }
-      ])
+      .update({
+        docente: dni,
+        empresa: idEnterprise
+      })
+      .eq('docente', dni)
       .select()
     if (error) {
       console.error('Error fetching job:', error)
@@ -535,31 +494,35 @@ export default function AddTeacher() {
   const handleSubmit = async () => {
     try {
       setLoading(true)
-      await addAreas()
-      await addUniversity()
-      await addCity()
-      await addTeacher()
-      await addDregree()
-      await addStudies()
-      await addPhone()
-      await addTypeReceipt()
-      await addCv()
-      await addInterview()
-      await addEnterprise()
-      await addJob()
+      await editAreas()
+      await editUniversity()
+      await editCity()
+      await editTeacher()
+      await editDregree()
+      await editStudies()
+      await editPhone()
+      await editTypeReceipt()
+      await editCv()
+      await editInterview()
+      await editEnterprise()
+      await editJob()
       // Procedemos a cerrar
       handleClose()
       window.location.reload()
     } catch (error) {
       console.error('Error during submission:', error)
+    } finally {
+      setLoading(false) // Asegúrate de detener el loading en cualquier caso
     }
   }
 
   return (
     <>
-      <button className="bg-white px-4 py-2 rounded-md flex " onClick={handleClickOpen}>
-        <AddIcon className="text-primary-blue mr-1" />
-        <p className="font-medium ">Añadir docente</p>
+      <button
+        className=" px-3 py-2 rounded-md text-gray-500 flex hover:text-primary-blue "
+        onClick={handleClickOpen}
+      >
+        <ModeEditOutlinedIcon className="hover:scale-110 transition-transform duration-300 ease-in-out" />
       </button>
 
       <Dialog
@@ -575,8 +538,8 @@ export default function AddTeacher() {
       >
         <section className="flex justify-between px-8 pt-7 ">
           <article className="mr-40">
-            <h2 className="text-2xl font-bold">Añadir Docente</h2>
-            <p className="opacity-70">Ingrese los datos del nuevo docente</p>
+            <h2 className="text-2xl font-bold">Modificar Docente</h2>
+            <p className="opacity-70">Ingrese los datos nuevos del docente</p>
           </article>
           <article>
             <button className="opacity-60" onClick={handleClose}>

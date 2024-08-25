@@ -6,6 +6,8 @@ import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined'
 import CloseIcon from '@mui/icons-material/Close'
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined'
 import DownloadCv from '../components/DownloadCv'
+import EditTeacher from './EditTeacher'
+import DeleteTeacher from './DeleteTeacher'
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
     children: React.ReactElement<any, any>
@@ -33,6 +35,7 @@ interface teacherCardInfo {
   tiporecepcion: string | undefined
   telefono: string | undefined
   titulo: string | undefined
+  fechagraduacion: string | undefined
   universidad: string | undefined
   cvlink: string | undefined
 }
@@ -126,6 +129,7 @@ export default function ProfileButton({ teacher }: { teacher: teacherCardInfo })
                 <div className="text-right">
                   <p className="font-semibold">{teacher.titulo}</p>
                   <p className="text-sm opacity-80">{teacher.universidad}</p>
+                  <p className="text-sm opacity-80">{teacher.fechagraduacion}</p>
                 </div>
               </article>
               <article className="flex justify-between">
@@ -149,11 +153,13 @@ export default function ProfileButton({ teacher }: { teacher: teacherCardInfo })
                 <p className="font-semibold">{teacher.recomendado}</p>
               </article>
             </section>
-            <section className="mx-auto mt-6">
+            <section className="flex mx-auto">
               <DownloadCv
-                style="flex border-2 p-2 rounded-md bg-primary-blue text-white"
+                style="flex border-2 p-2 rounded-md bg-primary-blue text-white mr-2"
                 cvlink={teacher.cvlink}
               />
+              <EditTeacher teacher={teacher} />
+              <DeleteTeacher teacher={teacher} />
             </section>
           </section>
           <section className="flex flex-col gap-y-2">
@@ -170,22 +176,6 @@ export default function ProfileButton({ teacher }: { teacher: teacherCardInfo })
               <p className="font-bold text-xl pb-1">Observaciones Entrevista</p>
               <p className="opacity-70 ">{teacher.observacionEntrevista}</p>
             </article>
-            {/* <article>
-              <p className="font-bold text-xl pb-1">Experiencia</p>
-              <ul className="opacity-70 list-disc pl-8">
-                <li>Profesor de Matematicas - Instituto XYZ (Enero 2015 - Actualidad)</li>
-                <li>Profesor de Matematicas - Instituto ABC (Agosto 2010 - Diciembre 2014)</li>
-              </ul>
-            </article> */}
-            {/* <article>
-              <p className="font-bold text-xl pb-1">Educación</p>
-              <ul className="opacity-70 list-disc pl-8">
-                <li>
-                  Licenciatura en MatemáticasUniversidad Nacional Autónoma de México (UNAM) 2006 -
-                  2010
-                </li>
-              </ul>
-            </article> */}
           </section>
         </section>
       </Dialog>
