@@ -342,6 +342,9 @@ export default function TeacherBoard({
           doc.text(`Universidad: ${teacher.universidad || 'N/A'}`, margin, yOffset)
           yOffset += lineHeight
 
+          doc.text(`Fecha de Graduación: ${teacher.fechagraduacion || 'N/A'}`, margin, yOffset)
+          yOffset += lineHeight
+
           yOffset += 5 // Espacio extra entre secciones
 
           // Información de la Entrevista

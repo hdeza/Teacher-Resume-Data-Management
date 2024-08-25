@@ -22,6 +22,7 @@ interface teacherCardInfo {
   tiporecepcion: string | undefined
   telefono: string | undefined
   titulo: string | undefined
+  fechagraduacion: string | undefined
   universidad: string | undefined
   cvlink: string | undefined
 }
