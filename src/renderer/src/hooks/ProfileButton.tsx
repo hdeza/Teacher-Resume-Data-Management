@@ -52,9 +52,20 @@ export default function ProfileButton({ teacher }: { teacher: teacherCardInfo })
   }
 
   const calculateAge = (birthdate: string) => {
-    const currentYear = new Date().getFullYear()
-    const birthYear = parseInt(birthdate)
-    const age = currentYear - birthYear
+    const birthDateObj = new Date(birthdate)
+    const today = new Date()
+
+    let age = today.getFullYear() - birthDateObj.getFullYear()
+    const monthDifference = today.getMonth() - birthDateObj.getMonth()
+
+    // Si el mes actual es anterior al mes de nacimiento o si es el mismo mes pero el día actual es anterior al día de nacimiento, resta 1 a la edad
+    if (
+      monthDifference < 0 ||
+      (monthDifference === 0 && today.getDate() < birthDateObj.getDate())
+    ) {
+      age--
+    }
+
     return age
   }
 
@@ -129,7 +140,12 @@ export default function ProfileButton({ teacher }: { teacher: teacherCardInfo })
                 <div className="text-right">
                   <p className="font-semibold">{teacher.titulo}</p>
                   <p className="text-sm opacity-80">{teacher.universidad}</p>
-                  <p className="text-sm opacity-80">{teacher.fechagraduacion}</p>
+                </div>
+              </article>
+              <article className="flex justify-between">
+                <p className="opacity-70">Fecha de Graduación:</p>
+                <div className="text-right">
+                  <p className="font-semibold">{teacher.fechagraduacion}</p>
                 </div>
               </article>
               <article className="flex justify-between">

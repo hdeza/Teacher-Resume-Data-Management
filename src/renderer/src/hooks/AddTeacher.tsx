@@ -129,6 +129,7 @@ export default function AddTeacher() {
             setRecommendedBy={setRecommendedBy}
             handleSubmit={handleSubmit}
             editAdd="Añadir"
+            dni={dni}
           />
         )
     }
@@ -234,7 +235,10 @@ export default function AddTeacher() {
   // Ingreso de Ciudades
   const addCity = async () => {
     const checkCity = async (city: string) => {
-      const { data, error } = await supabase.from('ciudades').select('idciudad').eq('nombre', city)
+      const { data, error } = await supabase
+        .from('ciudades')
+        .select('idciudad')
+        .eq('nombre', capitalizeWords(city))
       if (error) {
         if (error.code === 'PGRST116') {
           // El error PGRST116 indica que no se encontró ningún registro
@@ -257,7 +261,7 @@ export default function AddTeacher() {
     if (!cityExists) {
       const { data, error } = await supabase
         .from('ciudades')
-        .insert([{ nombre: city }]) // se inserta el nombre de la ciudad del docente
+        .insert([{ nombre: capitalizeWords(city) }]) // se inserta el nombre de la ciudad del docente
         .select()
       if (error) {
         console.error('Error fetching cities:', error)

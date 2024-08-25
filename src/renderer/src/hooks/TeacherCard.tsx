@@ -27,13 +27,25 @@ interface teacherCardInfo {
   cvlink: string | undefined
 }
 export default function TeacherCard({ teacher }: { teacher: teacherCardInfo }) {
-  // calculamos la edad segun el año actual y el año de nacimiento del docente
+  // calculamos la edad del docente
   const calculateAge = (birthdate: string) => {
-    const currentYear = new Date().getFullYear()
-    const birthYear = parseInt(birthdate)
-    const age = currentYear - birthYear
+    const birthDateObj = new Date(birthdate)
+    const today = new Date()
+
+    let age = today.getFullYear() - birthDateObj.getFullYear()
+    const monthDifference = today.getMonth() - birthDateObj.getMonth()
+
+    // Si el mes actual es anterior al mes de nacimiento o si es el mismo mes pero el día actual es anterior al día de nacimiento, resta 1 a la edad
+    if (
+      monthDifference < 0 ||
+      (monthDifference === 0 && today.getDate() < birthDateObj.getDate())
+    ) {
+      age--
+    }
+
     return age
   }
+
   return (
     <>
       <div className="border-2 p-7 max-w-xs flex flex-col justify-between">

@@ -37,8 +37,7 @@ export default function PageTwoAdd({
         <article className="flex flex-col pt-4 font-medium">
           <label className="text-lg">Año de nacimiento</label>
           <input
-            type="text"
-            placeholder="AAAA"
+            type="date"
             maxLength={4}
             className="border p-2 bg-gray-100 font-light rounded-md"
             value={year}

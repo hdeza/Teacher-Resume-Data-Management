@@ -12,7 +12,8 @@ export default function PageThreeAdd({
   cvLink,
   setCVLink,
   handleSubmit,
-  editAdd
+  editAdd,
+  dni
 }: {
   recommendedBy: string
   setRecommendedBy: React.Dispatch<React.SetStateAction<string>>
@@ -25,8 +26,10 @@ export default function PageThreeAdd({
   cvLink: string
   setCVLink: React.Dispatch<React.SetStateAction<string>>
   editAdd: string
+  dni: string
   handleSubmit: () => void
 }) {
+  const isDisabled = dni.trim() === ''
   return (
     <>
       <section className="px-8 min-h-300">
@@ -79,7 +82,10 @@ export default function PageThreeAdd({
             onChange={(e) => setCVLink(e.target.value)}
           />
           <button
-            className="flex border-2 p-2 rounded-md bg-primary-blue text-white"
+            disabled={isDisabled}
+            className={`flex border-2 p-2 rounded-md bg-primary-blue text-white ${
+              isDisabled && 'bg-gray-400 cursor-not-allowed'
+            }`}
             onClick={handleSubmit}
           >
             <AddCircleOutlineRoundedIcon />

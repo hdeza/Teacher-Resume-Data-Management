@@ -41,6 +41,7 @@ export default function PageOneAdd({
         <article className="flex flex-col  pt-4 font-medium">
           <label className="text-lg">Nombre</label>
           <input
+            autoFocus
             type="text"
             placeholder="Escriba el nombre del docente"
             className="border p-2 bg-gray-100 font-light rounded-md"
@@ -62,6 +63,7 @@ export default function PageOneAdd({
           <label className="text-lg">N°Documento</label>
           <input
             type="number"
+            required
             placeholder="Digite la cédula"
             className="border p-2 bg-gray-100 font-light rounded-md"
             value={dni}
