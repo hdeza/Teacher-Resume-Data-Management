@@ -29,7 +29,7 @@ export default function PageThreeAdd({
   dni: string
   handleSubmit: () => void
 }) {
-  const isDisabled = dni.trim() === ''
+  const isDisabled = typeof dni === 'string' && dni.trim() === ''
   return (
     <>
       <section className="px-8 min-h-300">

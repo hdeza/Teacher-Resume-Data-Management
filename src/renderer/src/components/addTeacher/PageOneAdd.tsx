@@ -73,7 +73,7 @@ export default function PageOneAdd({
         <article className="flex flex-col pt-4 font-medium">
           <label className="text-lg">Telefono</label>
           <input
-            type="number"
+            type="text"
             placeholder="Digite número telefónico"
             className="border p-2 bg-gray-100 font-light rounded-md"
             value={phone}

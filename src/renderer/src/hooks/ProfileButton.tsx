@@ -68,6 +68,7 @@ export default function ProfileButton({ teacher }: { teacher: teacherCardInfo })
 
     return age
   }
+  const telefonos = teacher.telefono?.split('-')
 
   return (
     <React.Fragment>
@@ -121,7 +122,15 @@ export default function ProfileButton({ teacher }: { teacher: teacherCardInfo })
               </article>
               <article className="flex justify-between">
                 <p className="opacity-70">Telefono:</p>
-                <p className="font-semibold">{teacher.telefono}</p>
+                <div>
+                  {telefonos?.map((telefono) => {
+                    return (
+                      <p key={telefono} className="font-semibold">
+                        {telefono}
+                      </p>
+                    )
+                  })}
+                </div>
               </article>
               <article className="flex justify-between">
                 <p className="opacity-70">Ciudad:</p>
@@ -169,14 +178,16 @@ export default function ProfileButton({ teacher }: { teacher: teacherCardInfo })
                 <p className="font-semibold">{teacher.recomendado}</p>
               </article>
             </section>
-            <section className="flex mx-auto">
-              <DownloadCv
-                style="flex border-2 p-2 rounded-md bg-primary-blue text-white mr-2"
-                cvlink={teacher.cvlink}
-              />
-              <EditTeacher teacher={teacher} />
-              <DeleteTeacher teacher={teacher} />
-            </section>
+            {open && (
+              <section className="flex mx-auto">
+                <DownloadCv
+                  style="flex border-2 p-2 rounded-md bg-primary-blue text-white mr-2"
+                  cvlink={teacher.cvlink}
+                />
+                <EditTeacher teacher={teacher} />
+                <DeleteTeacher teacher={teacher} />
+              </section>
+            )}
           </section>
           <section className="flex flex-col gap-y-2">
             {/* Sección de información detallada del docente */}

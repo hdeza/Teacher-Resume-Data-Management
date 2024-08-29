@@ -165,6 +165,7 @@ export default function EditTeacher({ teacher }: { teacher: teacherCardInfo }) {
       case 3:
         return (
           <PageThreeAdd
+            dni={dni}
             cvLink={cvLink}
             setCVLink={setCVLink}
             generalRemarks={generalRemarks}
