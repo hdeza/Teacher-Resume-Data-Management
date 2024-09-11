@@ -57,7 +57,7 @@ export default function TeacherBoard({
       .eq('docente', dni)
     if (error) {
       console.error(error)
-    } else if (entrevista) {
+    } else if (entrevista && entrevista.length > 0) {
       newTeacher.fechaEntrevista = entrevista[0].fecha
       newTeacher.observacionEntrevista = entrevista[0].observacionentrevista
     }
@@ -70,7 +70,7 @@ export default function TeacherBoard({
       .eq('idciudad', idCiudad)
     if (error) {
       console.error(error)
-    } else if (ciudades) {
+    } else if (ciudades && ciudades.length > 0) {
       newTeacher.ciudad = ciudades[0].nombre
     }
   }
@@ -79,7 +79,7 @@ export default function TeacherBoard({
     let { data: telefonos, error } = await supabase.from('telefonos').select('*').eq('docente', dni)
     if (error) {
       console.error(error)
-    } else if (telefonos) {
+    } else if (telefonos && telefonos.length > 0) {
       newTeacher.telefono = telefonos[0].numerotel
     }
   }
@@ -88,7 +88,7 @@ export default function TeacherBoard({
     let { data: areas, error } = await supabase.from('areas').select('*').eq('idarea', idArea)
     if (error) {
       console.error(error)
-    } else if (areas) {
+    } else if (areas && areas.length > 0) {
       newTeacher.area = areas[0].nombre
     }
   }
@@ -100,7 +100,7 @@ export default function TeacherBoard({
       .eq('idtitulo', idTitulo)
     if (error) {
       console.error(error)
-    } else if (titulos) {
+    } else if (titulos && titulos.length > 0) {
       newTeacher.titulo = titulos[0].nombre
       await fetchArea(titulos[0].areaestudio, newTeacher)
       newTeacher.universidad = titulos[0].universidad
@@ -111,7 +111,7 @@ export default function TeacherBoard({
     let { data: estudios, error } = await supabase.from('estudios').select('*').eq('docente', dni)
     if (error) {
       console.error(error)
-    } else if (estudios) {
+    } else if (estudios && estudios.length > 0) {
       estudios.forEach((estudio) => fetchTitulo(estudio.titulo, newTeacher))
       newTeacher.fechagraduacion = estudios[0].fecha
     }
@@ -124,7 +124,7 @@ export default function TeacherBoard({
       .eq('idempresa', idEmpresa)
     if (error) {
       console.error(error)
-    } else if (empresas) {
+    } else if (empresas && empresas.length > 0) {
       newTeacher.empresa = empresas[0].nombre
     }
   }
@@ -133,7 +133,7 @@ export default function TeacherBoard({
     let { data: trabajos, error } = await supabase.from('trabajos').select('*').eq('docente', dni)
     if (error) {
       console.error(error)
-    } else if (trabajos) {
+    } else if (trabajos && trabajos.length > 0) {
       trabajos.forEach(async (trabajo) => await fetchEmpresa(trabajo.empresa, newTeacher))
     }
   }
@@ -145,7 +145,7 @@ export default function TeacherBoard({
       .eq('idtiporecepcion', idTipoRecepcion)
     if (error) {
       console.error(error)
-    } else if (tiposRecepcion) {
+    } else if (tiposRecepcion && tiposRecepcion.length > 0) {
       newTeacher.tiporecepcion = tiposRecepcion[0].nombre
     }
   }
@@ -154,7 +154,7 @@ export default function TeacherBoard({
     let { data: resumes, error } = await supabase.from('resumes').select('*').eq('docente', dni)
     if (error) {
       console.error(error)
-    } else if (resumes) {
+    } else if (resumes && resumes.length > 0) {
       newTeacher.fecharecepcion = resumes[0].fecharecepcion
       newTeacher.cvlink = resumes[0].cvlink
       await fetchRecepcion(resumes[0].recepcion, newTeacher)
@@ -166,7 +166,7 @@ export default function TeacherBoard({
     if (error) {
       console.error(error)
       return
-    } else if (docentes) {
+    } else if (docentes && docentes.length > 0) {
       // console.log(docentes)
       //ahora vamos a leer docente por docente toda la informacion pertinente
       const teacherPromises = docentes.map(async (teacher) => {
